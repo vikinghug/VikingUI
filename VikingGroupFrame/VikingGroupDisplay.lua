@@ -450,6 +450,7 @@ function VikingGroupDisplay:OnDocumentReady()
 end
 
 function VikingGroupDisplay:OnWindowManagementReady()
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.wndGroupHud, strName = "Viking Group Hud" })
   Event_FireGenericEvent("WindowManagementAdd", { wnd = self.wndGroupHud, strName = "Viking Group Hud" })
 end
 
