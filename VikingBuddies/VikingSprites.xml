@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sprites>
+    <Sprite Name="Chat" Cycle="1">
+        <Frame Texture="VikingBuddies\img\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" Stretchy="1" HotspotX="65" HotspotY="65" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <Sprite Name="Account" Cycle="1">
+        <Frame Texture="VikingBuddies\img\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="16" y1="16" y2="16" y3="16" y4="16" y5="32" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <Sprite Name="Single" Cycle="1">
+        <Frame Texture="VikingBuddies\img\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="32" y1="32" y2="32" y3="32" y4="32" y5="48" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <Sprite Name="Group" Cycle="1">
+        <Frame Texture="VikingBuddies\img\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="48" y1="48" y2="48" y3="48" y4="48" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <AutoButton Name="ChatButton" Texture="VikingBuddies\img\icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" Stretchy="1" StateBits="23" Direction="Across"/>
+    <AutoButton Name="GroupButton" Texture="VikingBuddies\img\icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="48" y1="48" y2="48" y3="48" y4="48" y5="64" Stretchy="1" StateBits="23" Direction="Across"/>
+</Sprites>

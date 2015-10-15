@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Addon Author="VikinghugUI" Version="0.1.0" APIVersion="9" Name="VikingSettings" Description="A Settings Menu for all Vikinghug Addons">
+    <!-- Libraries -->
+    <Script Name="GeminiAddon/GeminiAddon.lua"/>
+    <Script Name="GeminiLogging/GeminiLogging.lua"/>
+    <Script Name="GeminiColor/GeminiColor.lua"/>
+    <Form Name="GeminiColor/GeminiColor.xml"/>
+    <Script Name="CallbackHandler/CallbackHandler-1.0.lua"/>
+    <Script Name="GeminiDB/GeminiDB-1.0.lua"/>
+    <!-- Addon Init -->
+    <Script Name="VikingSettings.lua"/>
+    <!-- Additional Modules/XML -->
+    <Form Name="VikingSettings.xml"/>
+</Addon>

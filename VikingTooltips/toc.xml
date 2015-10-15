@@ -1,0 +1,5 @@
+<Addon Name="VikingTooltips" Version="0.0.1" Author="VikinghugUI" APIVersion="9" Description="A minimal Toolltip replacement.">
+    <Script Name="VikingTooltips.lua"/>
+    <Form Name="TooltipsForms.xml"/>
+    <ReplaceAddon Name="ToolTips"/>
+</Addon>

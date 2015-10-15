@@ -1,0 +1,6 @@
+<Addon Name="VikingMinimap" Version="0.0.1" Author="VikinghugUI" APIVersion="9" Description="Minimap Of Viking Awesomeness">
+    <Script Name="VikingMinimap.lua"/>
+    <Form Name="VikingMinimap.xml"/>
+    <Sprite Name="VikingMinimapSprites.xml"/>
+    <ReplaceAddon Name="MiniMap"/>
+</Addon>

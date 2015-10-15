@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Forms>
+    <Form Class="Window" LAnchorPoint="0" LAnchorOffset="130" TAnchorPoint="0" TAnchorOffset="100" RAnchorPoint="0" RAnchorOffset="224" BAnchorPoint="0" BAnchorOffset="206" RelativeToClient="0" Font="Default" Text="" BGColor="UI_WindowBGDefault" TextColor="UI_WindowTextDefault" Template="Default" TooltipType="OnCursor" Name="Form" Border="0" Picture="0" SwallowMouseClicks="0" Moveable="0" Escapable="0" Overlapped="0" TooltipColor="" Tooltip=""/>
+    <SpriteFile Name="VikingSprites.xml"/>
+    <TemplateFile Name="VikingSettingsTemplate.xml"/>
+</Forms>

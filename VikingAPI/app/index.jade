@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  //- SECTION:
+  a#repos.anchor
+  section.download
+    //- section header
+    .row
+      .small-12.medium-10.columns.small-center.text-center
+        h2
+          i.icon-branch-alt
+          | Repos
+
+        include:md ../data/repos.md
+
+  //- SECTION:
+  a#how-to-use.anchor
+  section.how-to-use
+    //- section header
+    .row
+      .small-12.medium-10.columns.small-center.text-center
+        h2
+          i.icon-forklift
+          | How to use
+
+        include:md ../data/how-to-use.md
+
+block footer
+  script(src='/vendor/jquery/dist/jquery.min.js')
+  script(src='/assets/js/app.js')

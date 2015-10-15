@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sprites>
+    <Sprite Name="Circle1pxBorder" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\circle-1px-border.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="64" y0="0" y1="0" y2="0" y3="0" y4="0" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="AttributeName" EndColor="AttributeName"/>
+    </Sprite>
+    <Sprite Name="Circle64" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\circle-64.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="64" y0="0" y1="0" y2="0" y3="0" y4="0" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Circle36" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\circle-border-36.tga" x0="0" x1="36" x2="36" x3="36" x4="36" x5="36" y0="0" y1="36" y2="36" y3="36" y4="36" y5="36" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Gradient1024" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\gradient1024.tga" x0="0" x1="1024" x2="1024" x3="1024" x4="1024" x5="1024" y0="0" y1="1024" y2="1024" y3="1024" y4="1024" y5="1024" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Gradient128" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\gradient128.tga" x0="0" x1="256" x2="256" x3="256" x4="256" x5="256" y0="0" y1="128" y2="128" y3="128" y4="128" y5="128" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="SprintBackground" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\sprintBackground.tga" x0="0" x1="4" x2="5" x3="5" x4="6" x5="12" y0="0" y1="0" y2="0" y3="0" y4="0" y5="8" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Chat" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" Stretchy="1" HotspotX="65" HotspotY="65" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <Sprite Name="Account" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="16" y1="16" y2="16" y3="16" y4="16" y5="32" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <Sprite Name="Single" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="32" y1="32" y2="32" y3="32" y4="32" y5="48" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <Sprite Name="Group" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\icons.tga" x0="16" x1="16" x2="16" x3="16" x4="16" x5="32" y0="48" y1="48" y2="48" y3="48" y4="48" y5="64" Stretchy="1" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="ffffffff" EndColor="ffffffff"/>
+    </Sprite>
+    <Sprite Name="CancelIcon" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\locked.tga" x0="0" x1="28" x2="28" x3="28" x4="28" x5="28" y0="28" y1="56" y2="56" y3="56" y4="56" y5="56" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="LeaderIcon" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\leader.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ClassMedic" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\class-icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="13" y0="0" y1="0" y2="0" y3="0" y4="0" y5="13" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ClassSpellslinger" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\class-icons.tga" x0="13" x1="13" x2="13" x3="13" x4="13" x5="26" y0="0" y1="0" y2="0" y3="0" y4="0" y5="13" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ClassWarrior" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\class-icons.tga" x0="26" x1="26" x2="26" x3="26" x4="26" x5="39" y0="0" y1="0" y2="0" y3="0" y4="0" y5="13" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ClassStalker" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\class-icons.tga" x0="39" x1="39" x2="39" x3="39" x4="39" x5="52" y0="0" y1="0" y2="0" y3="0" y4="0" y5="13" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ClassEsper" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\class-icons.tga" x0="52" x1="52" x2="52" x3="52" x4="52" x5="65" y0="0" y1="0" y2="0" y3="0" y4="0" y5="13" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="ClassEngineer" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\class-icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="13" y0="13" y1="13" y2="13" y3="13" y4="13" y5="26" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+
+    <Sprite Name="ArrowRight" Cycle="1">
+        <Frame Texture="VikingLibrary\assets\arrowRight.tga" x0="0" x1="16" x2="16" x3="16" x4="16" x5="16" y0="0" y1="32" y2="32" y3="32" y4="32" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+
+    <AutoButton Name="ArrowUp" Texture="VikingLibrary\assets\menuArrows.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="32" y0="0" y1="0" y2="0" y3="0" y4="0" y5="12" Stretchy="1" StateBits="23" Direction="Down"/>
+    <AutoButton Name="ArrowDown" Texture="VikingLibrary\assets\menuArrows.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="32" y0="0" y1="0" y2="0" y3="0" y4="0" y5="12" Stretchy="1" StateBits="23" Direction="Down"/>
+    <AutoButton Name="ChatButton" Texture="VikingLibrary\assets\icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" Stretchy="1" StateBits="23" Direction="Across"/>
+    <AutoButton Name="GroupButton" Texture="VikingLibrary\assets\icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="48" y1="48" y2="48" y3="48" y4="48" y5="64" Stretchy="1" StateBits="23" Direction="Across"/>
+    <AutoButton Name="CloseButton" Texture="VikingLibrary\assets\icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="17" y0="64" y1="64" y2="64" y3="64" y4="64" y5="81" StateBits="15" Direction="Across"/>
+    <AutoButton Name="SquareButton" Texture="VikingLibrary\assets\buttonShapes.tga" x0="0" x1="2" x2="2" x3="2" x4="11" x5="16" y0="0" y1="4" y2="4" y3="4" y4="9" y5="16" Stretchy="1" StateBits="15" Direction="Down"/>
+    <AutoButton Name="SmallRoundButton" Texture="VikingLibrary\assets\buttonShapes.tga" x0="16" x1="24" x2="24" x3="24" x4="40" x5="48" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" Stretchy="1" StateBits="15" Direction="Down"/>
+    <AutoButton Name="LargeRoundButton" Texture="VikingLibrary\assets\buttonShapes.tga" x0="48" x1="64" x2="64" x3="64" x4="80" x5="96" y0="0" y1="0" y2="0" y3="0" y4="0" y5="24" Stretchy="1" StateBits="15" Direction="Down"/>
+    <AutoButton Name="CheckBoxbtn" Texture="VikingLibrary\assets\CheckBoxBtn.png" x0="0" x1="22" x2="22" x3="22" x4="22" x5="22" y0="0" y1="18" y2="18" y3="18" y4="18" y5="18" StateBits="31" Direction="Down"/>
+
+</Sprites>

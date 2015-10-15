@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WindowTemplates>
+    <WindowTemplate Name="VikingFrame" ClientFrame="BasicSprites:WhiteFill" UseMargins="0" TopMargin="0" LeftMargin="0" RightMargin="0" BottomMargin="0">
+        <VScroll Internal="BasicSprites:WhiteFill">
+            <DecButton Auto="HologramSprites:HoloArrowDownBtn"/>
+            <IncButton Auto="HologramSprites:HoloArrowUpBtn"/>
+            <Thumb Auto="CRB_HousingSprites:btnHologramRedfill"/>
+        </VScroll>
+    </WindowTemplate>
+</WindowTemplates>
