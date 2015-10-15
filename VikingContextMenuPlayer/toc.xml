@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<Addon Author="VikinghugUI" APIVersion="9" Name="VikingContextMenuPlayer" Description="" Version="0.0.1">
+<Addon Author="VikinghugUI" APIVersion="11" Name="VikingContextMenuPlayer" Description="" Version="0.0.1">
     <Script Name="VikingContextMenuPlayer.lua"/>
     <Form Name="VikingContextMenuPlayer.xml"/>
     <ReplaceAddon Name="ContextMenuPlayer"/>

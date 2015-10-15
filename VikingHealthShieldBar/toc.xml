@@ -1,4 +1,4 @@
-<Addon Name="VikingHealthShieldBar" Version="0.0.1" Author="VikinghugUI" APIVersion="9" Description="">
+<Addon Name="VikingHealthShieldBar" Version="0.0.1" Author="VikinghugUI" APIVersion="11" Description="">
     <Script Name="VikingHealthShieldBar.lua"/>
     <Form Name="VikingHealthShieldBar.xml"/>
     <ReplaceAddon Name="HealthShieldBar"/>

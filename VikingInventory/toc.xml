@@ -1,4 +1,4 @@
-<Addon Name="VikingInventory" Version="0.0.1" Author="VikinghugUI" APIVersion="9" Description="">
+<Addon Name="VikingInventory" Version="0.0.1" Author="VikinghugUI" APIVersion="11" Description="">
     <Script Name="VikingInventoryBag.lua"/>
     <Script Name="VikingItemPreview.lua"/>
     <Script Name="VikingImprovedSalvage.lua"/>

@@ -1,4 +1,4 @@
-<Addon Name="VikingActionBarShortcut" Version="0.0.1" Author="VikinghugUI" APIVersion="9" Description="">
+<Addon Name="VikingActionBarShortcut" Version="0.0.1" Author="VikinghugUI" APIVersion="11" Description="">
     <Script Name="VikingActionBarShortcut.lua"/>
     <Form Name="VikingActionBarShortcut.xml"/>
     <ReplaceAddon Name="ActionBarShortcut"/>

@@ -31,6 +31,7 @@ local VikingClassResources = {
   ]]
 }
 
+
 -- GameLib.CodeEnumClass.Warrior      = 1
 -- GameLib.CodeEnumClass.Engineer     = 2
 -- GameLib.CodeEnumClass.Esper        = 3
@@ -52,7 +53,7 @@ local tShowNodes = {
   [GameLib.CodeEnumClass.Engineer]     = false,
   [GameLib.CodeEnumClass.Esper]        = true,
   [GameLib.CodeEnumClass.Medic]        = true,
-  [GameLib.CodeEnumClass.Stalker]      = true,
+  [GameLib.CodeEnumClass.Stalker]      = false,
   [GameLib.CodeEnumClass.Spellslinger] = true
 }
 
@@ -196,6 +197,11 @@ function VikingClassResources:CreateClassResources()
     end
 
   end
+
+  if self.eClassID == GameLib.CodeEnumClass.Stalker then
+    self.wndMain:FindChild("PrimaryProgress:StalkerGuide"):Show(true)
+  end
+
   self.wndMain:FindChild("Nodes"):Show(tShowNodes[self.eClassID])
 end
 
@@ -229,13 +235,21 @@ end
 
 
 function VikingClassResources:UpdateProgressBar(unitPlayer, nResourceMax, nResourceCurrent)
-  local wndPrimaryProgress = self.wndMain:FindChild("PrimaryProgressBar")
-  local nProgressCurrent   = nResourceCurrent and nResourceCurrent or math.floor(unitPlayer:GetMana())
-  local nProgressMax       = nResourceMax and nResourceMax or math.floor(unitPlayer:GetMaxMana())
-  local className          = tClassName[self.eClassID]
+  --local wndPrimaryProgress = self.wndMain:FindChild("PrimaryProgressBar")
+  --local nProgressCurrent   = nResourceCurrent and nResourceCurrent or math.floor(unitPlayer:GetMana())
+  --local nProgressMax       = nResourceMax and nResourceMax or math.floor(unitPlayer:GetMaxMana())
+  --local className          = tClassName[self.eClassID]
 
-  wndPrimaryProgress:SetMax(nProgressMax)
-  wndPrimaryProgress:SetProgress(nProgressCurrent)
+  local wndPrimaryProgress = self.wndMain:FindChild("PrimaryProgressBar")
+  local nProgressCurrent   = nResourceCurrent and nResourceCurrent or math.floor(unitPlayer:GetCastElapsed())
+  local nProgressMax       = nResourceMax and nResourceMax or math.floor(unitPlayer:GetCastDuration())
+  local className          = tClassName[self.eClassID]  
+
+  local nMana = unitPlayer:GetFocus()
+  local nMaxMana = unitPlayer:GetMaxFocus()
+
+  --wndPrimaryProgress:SetMax(nProgressMax)
+  --wndPrimaryProgress:SetProgress(nProgressCurrent)
   wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( className .. "Resource_FocusTooltip" ), nProgressCurrent, nProgressMax))
 
 
@@ -246,13 +260,24 @@ function VikingClassResources:UpdateProgressBar(unitPlayer, nResourceMax, nResou
   local bResourceTextPercent = self.db.char.textStyle["ResourceTextPercent"]
   local bResourceTextValue   = self.db.char.textStyle["ResourceTextValue"]
 
+  if self.eClassID == GameLib.CodeEnumClass.Esper or self.eClassID == GameLib.CodeEnumClass.Medic or self.eClassID == GameLib.CodeEnumClass.Spellslinger then
+    nProgressCurrent = math.floor(nMana)
+    nProgressMax = math.floor(nMaxMana)
+  end
+
+  wndPrimaryProgress:SetMax(nProgressMax)
+  wndPrimaryProgress:SetProgress(nProgressCurrent)
+
   if bResourceTextPercent and not bResourceTextValue then
     wndResourceText:SetText(math.floor(nProgressCurrent  / nProgressMax * 100) .. "%")
   elseif bResourceTextValue and not bResourceTextPercent then
-    wndResourceText:SetText(nProgressCurrent .. "/" .. nProgressMax)
+    wndResourceText:SetText(math.floor(nProgressCurrent) .. "/" .. math.floor(nProgressMax))
   elseif bResourceTextPercent and bResourceTextValue then
     wndResourceText:SetText(string.format("%d/%d (%d%%)", nProgressCurrent, nProgressMax, math.floor(nProgressCurrent  / nProgressMax * 100)))
+    --self.wndFocus:FindChild("ProgressBar"):SetBarColor(self._DB.profile.crFocus)
+    --wndResourceText:SetText(Round(nProgressCurrent, 0) .. " ( " .. Round((nProgressCurrent / nProgressMax) * 100, 1) .. "% )")
   end
+
 
   if self.eClassID == GameLib.CodeEnumClass.Engineer then
     wndResourceText:Show(bResourceTextPercent or bResourceTextValue)
@@ -304,9 +329,9 @@ function VikingClassResources:UpdateEngineerResources(unitPlayer, nResourceMax, 
 
   if nResourceCurrent >= 30 and nResourceCurrent <= 70 then
     -- wndProgressBar
-    wndGuide:SetBGColor('aa' .. tColors.red)
+    wndGuide:SetBGColor('aa' .. tColors.lightPurple)
   else
-    wndGuide:SetBGColor('99' .. tColors.lightPurple)
+    wndGuide:SetBGColor('aa' .. tColors.red)
   end
 
   -- Innate Bar
@@ -391,9 +416,17 @@ end
 -- STALKER
 
 function VikingClassResources:UpdateStalkerResources(unitPlayer, nResourceMax, nResourceCurrent)
+  local wndGuide             = self.wndMain:FindChild("PrimaryProgress:StalkerGuide")
 
   -- Primary Resource
   self:UpdateProgressBar(unitPlayer, nResourceMax, nResourceCurrent)
+
+  if nResourceCurrent >= 35 then
+    -- wndProgressBar
+    wndGuide:SetBGColor('aa' .. tColors.lightPurple)
+  else
+    wndGuide:SetBGColor('aa' .. tColors.red)
+  end
 
   -- Innate State Indicator
   self:ShowInnateIndicator()

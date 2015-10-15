@@ -419,16 +419,18 @@ function VikingActionBarFrame:OnPathBtn( wndHandler, wndControl, eMouseButton )
 end
 
 function VikingActionBarFrame:RedrawMounts()
-  local tMounts = AbilityBook.GetAbilitiesList(Spell.CodeEnumSpellTag.Mount) or {}
+  local tMounts = CollectiblesLib.GetMountList()
   local tMountList = {}
   local tSelectedSpellObj = nil
 
   for idx, tMountData  in pairs(tMounts) do
-    local tSpellObject = tMountData.tTiers[1].splObject
-    tMountList[idx] = tSpellObject
+    if tMountData.bIsKnown then
+      local tSpellObject = tMountData.splObject
+      tMountList[idx] = tSpellObject
 
-    if tSpellObject:GetId() == self.nSelectedMount then
-      tSelectedSpellObj = tSpellObject
+      if tSpellObject:GetId() == self.nSelectedMount then
+        tSelectedSpellObj = tSpellObject
+      end
     end
   end
 

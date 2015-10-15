@@ -1,4 +1,4 @@
-<Addon Name="VikingNameplates" Version="0.0.1" Author="VikinghugUI" APIVersion="9" Description="">
+<Addon Name="VikingNameplates" Version="0.0.1" Author="VikinghugUI" APIVersion="11" Description="">
     <Script Name="VikingNameplates.lua"/>
     <Form Name="VikingNameplates.xml"/>
     <ReplaceAddon Name="Nameplates"/>

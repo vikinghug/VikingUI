@@ -3,6 +3,7 @@ require "GameLib"
 require "Item"
 require "Window"
 require "Money"
+require "AccountItemLib"
 
 local VikingInventoryBag = {}
 local knSmallIconOption = 42
@@ -15,7 +16,12 @@ local karCurrency = {   -- Alt currency table; re-indexing the enums so they don
   {eType = Money.CodeEnumCurrencyType.Renown,       strTitle = Apollo.GetString("CRB_Renown"),          strDescription = Apollo.GetString("CRB_Renown_Desc")},
   {eType = Money.CodeEnumCurrencyType.ElderGems,        strTitle = Apollo.GetString("CRB_Elder_Gems"),        strDescription = Apollo.GetString("CRB_Elder_Gems_Desc")},
   {eType = Money.CodeEnumCurrencyType.Prestige,       strTitle = Apollo.GetString("CRB_Prestige"),        strDescription = Apollo.GetString("CRB_Prestige_Desc")},
-  {eType = Money.CodeEnumCurrencyType.CraftingVouchers,   strTitle = Apollo.GetString("CRB_Crafting_Vouchers"),   strDescription = Apollo.GetString("CRB_Crafting_Voucher_Desc")}
+  {eType = Money.CodeEnumCurrencyType.CraftingVouchers,   strTitle = Apollo.GetString("CRB_Crafting_Vouchers"),   strDescription = Apollo.GetString("CRB_Crafting_Voucher_Desc")},
+  {eType = Money.CodeEnumCurrencyType.Glory,   strTitle = Apollo.GetString("CRB_Glory"),   strDescription = Apollo.GetString("CRB_Glory_Desc")},
+  {eType = AccountItemLib.CodeEnumAccountCurrency.Omnibits,     strTitle = Apollo.GetString("CRB_OmniBits"),          strDescription = Apollo.GetString("CRB_OmniBits_Desc"), bAccountItem = true},
+  {eType = AccountItemLib.CodeEnumAccountCurrency.ServiceToken,   strTitle = Apollo.GetString("AccountInventory_ServiceToken"),   strDescription = Apollo.GetString("AccountInventory_ServiceToken_Desc"), bAccountItem = true},
+  {eType = AccountItemLib.CodeEnumAccountCurrency.MysticShiny,  strTitle = Apollo.GetString("CRB_FortuneCoin"),         strDescription = Apollo.GetString("CRB_FortuneCoin_Desc"), bAccountItem = true},
+  {eType = AccountItemLib.CodeEnumAccountCurrency.NCoins,     strTitle = Apollo.GetString("AccountInventory_NCoins"),      strDescription = Apollo.GetString("Storefront_NCoinsCurrencyToolip"), bAccountItem = true}
 }
 
 function VikingInventoryBag:new(o)
@@ -239,7 +245,17 @@ function VikingInventoryBag:OnDocumentReady()
   for idx = 1, #karCurrency do
     local tData = karCurrency[idx]
     local wnd = Apollo.LoadForm(self.xmlDoc, "PickerEntry", self.wndMain:FindChild("OptionsConfigureCurrencyList"), self)
-    wnd:FindChild("EntryCash"):SetMoneySystem(tData.eType) -- We'll fill in the amount during the timer
+    
+
+    --wnd:FindChild("EntryCash"):SetMoneySystem(tData.eType) -- We'll fill in the amount during the timer
+
+    if tData.bAccountItem then
+       wnd:FindChild("EntryCash"):SetMoneySystem(Money.CodeEnumCurrencyType.GroupCurrency, 0, 0, tData.eType)
+    else
+       wnd:FindChild("EntryCash"):SetMoneySystem(tData.eType)
+    end
+
+
     wnd:FindChild("PickerEntryBtn"):SetData(idx)
     wnd:FindChild("PickerEntryBtn"):SetCheck(idx == 1)
     wnd:FindChild("PickerEntryBtnText"):SetText(tData.strTitle)
@@ -266,6 +282,9 @@ function VikingInventoryBag:OnDocumentReady()
 
   self.wndIconBtnSortDropDown = self.wndMain:FindChild("OptionsContainer:OptionsConfigureSort:IconBtnSortDropDown")
   self.wndIconBtnSortDropDown:AttachWindow(self.wndIconBtnSortDropDown:FindChild("ItemSortPrompt"))
+
+  Apollo.RegisterEventHandler("WindowManagementReady", "OnWindowManagementReady", self)
+  self:OnWindowManagementReady()  
 end
 
 function VikingInventoryBag:OnInterfaceMenuListHasLoaded()
@@ -273,7 +292,8 @@ function VikingInventoryBag:OnInterfaceMenuListHasLoaded()
 end
 
 function VikingInventoryBag:OnWindowManagementReady()
-  Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Viking Inventory"})
+  Event_FireGenericEvent("WindowManagementRegister", {strName = "Viking Inventory", nSaveVersion=3})
+  Event_FireGenericEvent("WindowManagementAdd", {wnd = self.wndMain, strName = "Viking Inventory", nSaveVersion=3})
 end
 
 function VikingInventoryBag:OnCharacterCreated()
@@ -456,14 +476,28 @@ function VikingInventoryBag:UpdateAltCash(wndHandler, wndControl) -- Also from P
   local tData = karCurrency[wndHandler:FindChild("PickerEntryBtn"):GetData()]
 
   if wndHandler:FindChild("PickerEntryBtn"):IsChecked() then
-    self.wndMain:FindChild("AltCashWindow"):SetMoneySystem(tData.eType)
-    self.wndMain:FindChild("AltCashWindow"):SetAmount(GameLib.GetPlayerCurrency(tData.eType):GetAmount(), true)
+    if tData.bAccountItem then
+      self.wndMain:FindChild("AltCashWindow"):SetMoneySystem(Money.CodeEnumCurrencyType.GroupCurrency, 0, 0, tData.eType)
+      self.wndMain:FindChild("AltCashWindow"):SetAmount(AccountItemLib.GetAccountCurrency(tData.eType), true)
+    else
+      self.wndMain:FindChild("AltCashWindow"):SetMoneySystem(tData.eType)
+      self.wndMain:FindChild("AltCashWindow"):SetAmount(GameLib.GetPlayerCurrency(tData.eType):GetAmount(), true)
+    end
+
     self.wndMain:FindChild("AltCashWindow"):SetTooltip(String_GetWeaselString(Apollo.GetString("Inventory_MoneyTooltip"), tData.strDescription))
     self.wndMain:FindChild("MainCashWindow"):SetTooltip(String_GetWeaselString(Apollo.GetString("Inventory_MoneyTooltip"), tData.strDescription))
   end
 
   if self.wndMain:FindChild("OptionsBtn"):IsChecked() then
-    tData.wnd:FindChild("EntryCash"):SetAmount(GameLib.GetPlayerCurrency(tData.eType):GetAmount(), true)
+    --tData.wnd:FindChild("EntryCash"):SetAmount(GameLib.GetPlayerCurrency(tData.eType):GetAmount(), true)
+
+    if tData.bAccountItem then
+      tData.wnd:FindChild("EntryCash"):SetAmount(AccountItemLib.GetAccountCurrency(tData.eType), true)
+      --tData.wnd:FindChild("EntryCash"):SetAmount(GameLib.GetPlayerCurrency(tData.eType):GetAmount(), true)
+    else
+      --tData.wnd:FindChild("EntryCash"):SetAmount(GameLib.GetPlayerCurrency(tData.eType):GetAmount(), true)rue)
+      tData.wnd:FindChild("EntryCash"):SetAmount(GameLib.GetPlayerCurrency(tData.eType):GetAmount(), true)
+    end
   end
 end
 
