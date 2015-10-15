@@ -1907,3 +1907,4 @@ end
 -- VikingMiniMap instance
 ---------------------------------------------------------------------------------------------------
 local VikingMiniMapInst = VikingMiniMap:new()
+VikingMiniMapInst:Init()
