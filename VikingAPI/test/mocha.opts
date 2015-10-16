@@ -1,6 +1,0 @@
---compilers coffee:coffee-script/register
---timeout 20s
---require should
---reporter spec
---ui bdd
---growl
