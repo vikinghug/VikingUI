@@ -429,7 +429,7 @@ function VikingMiniMap:OnDocumentReady()
 	Apollo.RegisterEventHandler("Group_UpdatePosition", 				"OnGroupUpdatePosition", self)			-- ( arMembers )
 
 	Apollo.RegisterEventHandler("Tutorial_RequestUIAnchor", 			"OnTutorial_RequestUIAnchor", self)
-
+	Apollo.LoadSprites("SquareMapTextures.xml")
 	self.wndMain 			= Apollo.LoadForm(self.xmlDoc , "Minimap", "FixedHudStratum", self)
 	self.wndMinimapOptions 	= Apollo.LoadForm(self.xmlDoc , "MinimapOptions", nil, self)
 	self.wndMiniMap 		= self.wndMain:FindChild("MapContent")
