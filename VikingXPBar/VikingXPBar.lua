@@ -361,10 +361,8 @@ function VikingXPBar:ConfigurePathXPTooltip(unitPlayer)
   local nCurrentXP =  PlayerPathLib.GetPathXP() - nLastLevelXP
   local nNeededXP = PlayerPathLib.GetPathXPAtLevel(nNextLevel) - nLastLevelXP
 
-  local strTooltip = nNeededXP > 0 and string.format("<P Font=\"CRB_InterfaceSmall_O\">%s</P>", String_GetWeaselString(Apollo.GetString("Base_XPValue"), nCurrentXP, nNeededXP, nCurrentXP / nNeededXP * 100)) or ""
-  strTooltip = string.format("<P Font=\"CRB_InterfaceSmall_O\">%s %s%s</P>%s", Apollo.GetString(strPathType), Apollo.GetString("CRB_Level_"), nCurrentLevel, strTooltip)
-
-  return strTooltip
+  local strTooltip = nNeededXP > 0 and string.format("<P Font=\"CRB_InterfaceSmall_O\">%s</P>", String_GetWeaselString(Apollo.GetString("Base_XPValue"), Apollo.FormatNumber(nCurrentXP, 0, true), Apollo.FormatNumber(nNeededXP, 0, true), nCurrentXP / nNeededXP * 100)) or ""
+	return string.format("<P Font=\"CRB_InterfaceSmall_O\">%s %s%s</P>%s", Apollo.GetString(strPathType), Apollo.GetString("CRB_Level_"), nCurrentLevel, strTooltip)
 end
 
 -----------------------------------------------------------------------------------------------
@@ -469,30 +467,28 @@ function VikingXPBar:ConfigureEPTooltip(unitPlayer)
   end
 
   -- Top String
-  local strTooltip = String_GetWeaselString(Apollo.GetString("BaseBar_ElderPointsPercent"), nCurrentEP, nEPToAGem, math.min(99.9, nCurrentEP / nEPToAGem * 100))
-  if nCurrentEP == nEPDailyMax then
-    strTooltip = "<P Font=\"CRB_InterfaceSmall_O\">" .. strTooltip .. "</P><P Font=\"CRB_InterfaceSmall_O\">" .. Apollo.GetString("BaseBar_ElderPointsAtMax") .. "</P>"
-  else
-    local strDailyMax = String_GetWeaselString(Apollo.GetString("BaseBar_ElderPointsWeeklyMax"), nCurrentToDailyMax, nEPDailyMax, math.min(99.9, nCurrentToDailyMax / nEPDailyMax * 100))
-    strTooltip = "<P Font=\"CRB_InterfaceSmall_O\">" .. strTooltip .. "</P><P Font=\"CRB_InterfaceSmall_O\">" .. strDailyMax .. "</P>"
-  end
+	local strTooltip = String_GetWeaselString(Apollo.GetString("BaseBar_ElderPointsPercent"), Apollo.FormatNumber(nCurrentEP, 0, true), Apollo.FormatNumber(nEPToAGem, 0, true), nCurrentEP / nEPToAGem * 100)
+	if nCurrentEP == nEPDailyMax then
+		strTooltip = "<P Font=\"CRB_InterfaceSmall_O\">" .. strTooltip .. "</P><P Font=\"CRB_InterfaceSmall_O\">" .. Apollo.GetString("BaseBar_ElderPointsAtMax") .. "</P>"
+	else
+		local strDailyMax = String_GetWeaselString(Apollo.GetString("BaseBar_ElderPointsWeeklyMax"), Apollo.FormatNumber(nCurrentToDailyMax, 0, true), Apollo.FormatNumber(nEPDailyMax, 0, true), nCurrentToDailyMax / nEPDailyMax * 100)
+		strTooltip = "<P Font=\"CRB_InterfaceSmall_O\">" .. strTooltip .. "</P><P Font=\"CRB_InterfaceSmall_O\">" .. strDailyMax .. "</P>"
+	end
 
-  -- Rested
-  if nRestedEP > 0 then
-    local strRestLineOne = String_GetWeaselString(Apollo.GetString("Base_EPRested"), nRestedEP, nRestedEP / nEPToAGem * 100)
-    strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineOne)
+	-- Rested
+	if nRestedEP > 0 then
+		local strRestLineOne = String_GetWeaselString(Apollo.GetString("Base_EPRested"), Apollo.FormatNumber(nRestedEP, 0, true), nRestedEP / nEPDailyMax * 100)
+		strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineOne)
 
-    if nCurrentEP + nRestedEPPool > nEPToAGem then
-      strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, Apollo.GetString("Base_EPRestedEndsAfterLevelTooltip"))
-    else
-      local strRestLineTwo = String_GetWeaselString(Apollo.GetString("Base_EPRestedPoolTooltip"), nRestedEPPool, ((nRestedEPPool + nCurrentEP)  / nEPToAGem) * 100)
-      strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineTwo)
-    end
-  end
-
-  strTooltip = string.format("<P Font=\"CRB_InterfaceSmall_O\">%s%s</P>%s", Apollo.GetString("CRB_Level_"), unitPlayer:GetLevel(), strTooltip)
-
-  return strTooltip
+		if nCurrentEP + nRestedEPPool > nEPDailyMax then
+			strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, Apollo.GetString("Base_EPRestedEndsAfterLevelTooltip"))
+		else
+			local strRestLineTwo = String_GetWeaselString(Apollo.GetString("Base_EPRestedPoolTooltip"), Apollo.FormatNumber(nRestedEPPool, 0, true), ((nRestedEPPool + nCurrentEP)  / nEPDailyMax) * 100)
+			strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineTwo)
+		end
+	end
+	
+	return string.format("<P Font=\"CRB_InterfaceSmall_O\">%s%s</P>%s", Apollo.GetString("CRB_Level_"), unitPlayer:GetLevel(), strTooltip)
 end
 
 function VikingXPBar:ConfigurePeriodicEPTooltip(unitPlayer)
@@ -566,7 +562,7 @@ function VikingXPBar:RedrawXP()
   wndMaxEPBar:SetProgress(0)
   wndMaxEPBar:Show(false)
 
-  return math.min(99.9, nCurrentXP / nNeededXP * 100)
+  return nCurrentXP / nNeededXP * 100
 end
 
 function VikingXPBar:ConfigureXPTooltip(unitPlayer)
@@ -579,22 +575,20 @@ function VikingXPBar:ConfigureXPTooltip(unitPlayer)
     return
   end
 
-  local strTooltip = string.format("<P Font=\"CRB_InterfaceSmall_O\">%s</P>", String_GetWeaselString(Apollo.GetString("Base_XPValue"), nCurrentXP, nNeededXP, nCurrentXP / nNeededXP * 100))
-  if nRestedXP > 0 then
-    local strRestLineOne = String_GetWeaselString(Apollo.GetString("Base_XPRested"), nRestedXP, nRestedXP / nNeededXP * 100)
-    strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineOne)
+  local strTooltip = string.format("<P Font=\"CRB_InterfaceSmall_O\">%s</P>", String_GetWeaselString(Apollo.GetString("Base_XPValue"), Apollo.FormatNumber(nCurrentXP, 0, true), Apollo.FormatNumber(nNeededXP, 0, true), nCurrentXP / nNeededXP * 100))
+	if nRestedXP > 0 then
+		local strRestLineOne = String_GetWeaselString(Apollo.GetString("Base_XPRested"), Apollo.FormatNumber(nRestedXP, 0, true), nRestedXP / nNeededXP * 100)
+		strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineOne)
 
-    if nCurrentXP + nRestedXPPool > nNeededXP then
-      strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, Apollo.GetString("Base_XPRestedEndsAfterLevelTooltip"))
-    else
-      local strRestLineTwo = String_GetWeaselString(Apollo.GetString("Base_XPRestedPoolTooltip"), nRestedXPPool, ((nRestedXPPool + nCurrentXP)  / nNeededXP) * 100)
-      strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineTwo)
-    end
-  end
-
-  strTooltip = string.format("<P Font=\"CRB_InterfaceSmall_O\">%s%s</P>%s", Apollo.GetString("CRB_Level_"), unitPlayer:GetLevel(), strTooltip)
-
-  return strTooltip
+		if nCurrentXP + nRestedXPPool > nNeededXP then
+			strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, Apollo.GetString("Base_XPRestedEndsAfterLevelTooltip"))
+		else
+			local strRestLineTwo = String_GetWeaselString(Apollo.GetString("Base_XPRestedPoolTooltip"), Apollo.FormatNumber(nRestedXPPool, 0, false), ((nRestedXPPool + nCurrentXP)  / nNeededXP) * 100)
+			strTooltip = string.format("%s<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffda69ff\">%s</P>", strTooltip, strRestLineTwo)
+		end
+	end
+	
+	return string.format("<P Font=\"CRB_InterfaceSmall_O\">%s%s</P>%s", Apollo.GetString("CRB_Level_"), unitPlayer:GetLevel(), strTooltip)
 end
 
 -----------------------------------------------------------------------------------------------

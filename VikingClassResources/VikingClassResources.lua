@@ -237,24 +237,23 @@ end
 
 
 function VikingClassResources:UpdateProgressBar(unitPlayer, nResourceMax, nResourceCurrent)
-  --local wndPrimaryProgress = self.wndMain:FindChild("PrimaryProgressBar")
-  --local nProgressCurrent   = nResourceCurrent and nResourceCurrent or math.floor(unitPlayer:GetMana())
-  --local nProgressMax       = nResourceMax and nResourceMax or math.floor(unitPlayer:GetMaxMana())
-  --local className          = tClassName[self.eClassID]
-
   local wndPrimaryProgress = self.wndMain:FindChild("PrimaryProgressBar")
-  local nProgressCurrent   = nResourceCurrent and nResourceCurrent or math.floor(unitPlayer:GetCastElapsed())
-  local nProgressMax       = nResourceMax and nResourceMax or math.floor(unitPlayer:GetCastDuration())
-  local className          = tClassName[self.eClassID]  
+  local nProgressCurrent   = nResourceCurrent and nResourceCurrent or math.floor(unitPlayer:GetFocus())
+  local nProgressMax       = nResourceMax and nResourceMax or math.floor(unitPlayer:GetMaxFocus())
+  local className          = tClassName[self.eClassID]
 
-  local nMana = unitPlayer:GetFocus()
-  local nMaxMana = unitPlayer:GetMaxFocus()
-
-  --wndPrimaryProgress:SetMax(nProgressMax)
-  --wndPrimaryProgress:SetProgress(nProgressCurrent)
-  wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( className .. "Resource_FocusTooltip" ), nProgressCurrent, nProgressMax))
-
-
+  wndPrimaryProgress:SetMax(nProgressMax)
+  wndPrimaryProgress:SetProgress(nProgressCurrent)
+  
+  if self.eClassID == GameLib.CodeEnumClass.Stalker then
+    wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "StalkerResource_SuitPowerDesc" )))
+    elseif self.eClassID == GameLib.CodeEnumClass.Engineer then 
+    wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "Engineer_ResourceTooltip" )))
+	elseif self.eClassID == GameLib.CodeEnumClass.Warrior then
+	wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "WarriorResource_OverdriveCaps" )))
+  else
+    wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( className .. "Resource_FocusTooltip" ), nProgressCurrent, nProgressMax))
+end
 
   --Primary Text Style
 
@@ -262,24 +261,13 @@ function VikingClassResources:UpdateProgressBar(unitPlayer, nResourceMax, nResou
   local bResourceTextPercent = self.db.char.textStyle["ResourceTextPercent"]
   local bResourceTextValue   = self.db.char.textStyle["ResourceTextValue"]
 
-  if self.eClassID == GameLib.CodeEnumClass.Esper or self.eClassID == GameLib.CodeEnumClass.Medic or self.eClassID == GameLib.CodeEnumClass.Spellslinger then
-    nProgressCurrent = math.floor(nMana)
-    nProgressMax = math.floor(nMaxMana)
-  end
-
-  wndPrimaryProgress:SetMax(nProgressMax)
-  wndPrimaryProgress:SetProgress(nProgressCurrent)
-
   if bResourceTextPercent and not bResourceTextValue then
     wndResourceText:SetText(math.floor(nProgressCurrent  / nProgressMax * 100) .. "%")
   elseif bResourceTextValue and not bResourceTextPercent then
-    wndResourceText:SetText(math.floor(nProgressCurrent) .. "/" .. math.floor(nProgressMax))
+    wndResourceText:SetText(nProgressCurrent .. "/" .. nProgressMax)
   elseif bResourceTextPercent and bResourceTextValue then
     wndResourceText:SetText(string.format("%d/%d (%d%%)", nProgressCurrent, nProgressMax, math.floor(nProgressCurrent  / nProgressMax * 100)))
-    --self.wndFocus:FindChild("ProgressBar"):SetBarColor(self._DB.profile.crFocus)
-    --wndResourceText:SetText(Round(nProgressCurrent, 0) .. " ( " .. Round((nProgressCurrent / nProgressMax) * 100, 1) .. "% )")
   end
-
 
   if self.eClassID == GameLib.CodeEnumClass.Engineer then
     wndResourceText:Show(bResourceTextPercent or bResourceTextValue)

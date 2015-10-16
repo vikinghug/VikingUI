@@ -1,9 +1,10 @@
-<Addon Name="VikingInventory" Version="0.0.1" Author="VikinghugUI" APIVersion="11" Description="">
+<Addon Name="VikingInventory" Version="0.0.1" Author="VikinghugUI" APIVersion="11" Description="A minimal inventory skin.">
     <Script Name="VikingInventoryBag.lua"/>
-    <Script Name="VikingItemPreview.lua"/>
-    <Script Name="VikingImprovedSalvage.lua"/>
+    <Script Name="ItemPreview.lua"/>
+    <Script Name="ImprovedSalvage.lua"/>
     <Form Name="VikingInventoryBag.xml"/>
-    <Form Name="VikingItemPreview.xml"/>
-    <Form Name="VikingImprovedSalvage.xml"/>
-	<ReplaceAddon Name="Inventory"/>
+    <Form Name="ItemPreview.xml"/>
+    <Form Name="ImprovedSalvage.xml"/>
+    <ReplaceAddon Name="Inventory"/>
 </Addon>
+
