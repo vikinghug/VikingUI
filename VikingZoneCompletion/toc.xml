@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Addon Author="Zeirk" APIVersion="11" Name="VikingZoneCompletion" Description="" Version="0.0.1">
+    <Script Name="VikingZoneCompletion.lua"/>
+    <Form Name="VikingZoneCompletion.xml"/>
+    <ReplaceAddon Name="ZoneCompletion"/>
+</Addon>

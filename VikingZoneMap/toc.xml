@@ -1,0 +1,5 @@
+<Addon Name="VikingZoneMap" Version="0.0.1" Author="Zeirk" APIVersion="11" Description="Zone Maps.">
+    <Form Name="VikingZoneMapForms.xml"/>
+    <Script Name="VikingZoneMap.lua"/>
+    <ReplaceAddon Name="ZoneMap"/>
+</Addon>
