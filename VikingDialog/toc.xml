@@ -1,0 +1,5 @@
+<Addon Name="VikingDialog" Version="" Author="blakbird" APIVersion="11" Description="">
+    <Script Name="Dialog.lua"/>
+    <Form Name="Dialog.xml"/>
+    <ReplaceAddon Name="Dialog"/>
+</Addon>
