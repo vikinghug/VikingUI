@@ -105,6 +105,7 @@ function VikingUnitFrames:OnDocumentReady()
     return
   end
 
+  Apollo.RegisterEventHandler("WindowManagementReady"      , "OnWindowManagementReady"      , self)
   Apollo.RegisterEventHandler("WindowManagementUpdate"     , "OnWindowManagementUpdate"     , self)
   Apollo.RegisterEventHandler("TargetUnitChanged"          , "OnTargetUnitChanged"          , self)
   Apollo.RegisterEventHandler("AlternateTargetUnitChanged" , "OnFocusUnitChanged"           , self)
@@ -256,6 +257,8 @@ function VikingUnitFrames:OnCharacterLoaded()
     self.generalDb = self.db.parent
   end
 
+  SendVarToRover("db", self.db)
+
   -- PlayerFrame
   self.tPlayerFrame = self:CreateUnitFrame("Player")
 
@@ -276,22 +279,23 @@ function VikingUnitFrames:OnCharacterLoaded()
   -- ToT Frame
   self.tToTFrame = self:CreateUnitFrame("ToT")
 
-  -- Register frames with WindowManagement
-
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tPlayerFrame.wndUnitFrame, strName = "Viking Player Frame", nSaveVersion=1 })
-  Event_FireGenericEvent("WindowManagementAdd", { wnd = self.tPlayerFrame.wndUnitFrame, strName = "Viking Player Frame", nSaveVersion=1 })
-
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tTargetFrame.wndUnitFrame, strName = "Viking Target Frame", nSaveVersion=1 })  
-  Event_FireGenericEvent("WindowManagementAdd", { wnd = self.tTargetFrame.wndUnitFrame, strName = "Viking Target Frame", nSaveVersion=1 })
-
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tFocusFrame.wndUnitFrame,  strName = "Viking Focus Target", nSaveVersion=1 })  
-  Event_FireGenericEvent("WindowManagementAdd", { wnd = self.tFocusFrame.wndUnitFrame,  strName = "Viking Focus Target", nSaveVersion=1 })
-
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tToTFrame.wndUnitFrame,  strName = "Viking Target of Target Frame", nSaveVersion=1 })  
-  Event_FireGenericEvent("WindowManagementAdd", { wnd = self.tToTFrame.wndUnitFrame,  strName = "Viking Target of Target Frame", nSaveVersion=1 })
-
   self.eClassID =  playerUnit:GetClassId()
 
+end
+
+function VikingUnitFrames:OnWindowManagementReady()
+  -- Register frames with WindowManagement
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tPlayerFrame.wndUnitFrame, strName = "Viking Player Frame", nSaveVersion=1 })
+  Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tPlayerFrame.wndUnitFrame, strName = "Viking Player Frame", nSaveVersion=1 })
+
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tTargetFrame.wndUnitFrame, strName = "Viking Target Frame", nSaveVersion=1 })  
+  Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tTargetFrame.wndUnitFrame, strName = "Viking Target Frame", nSaveVersion=1 })
+
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tFocusFrame.wndUnitFrame,  strName = "Viking Focus Target", nSaveVersion=1 })  
+  Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tFocusFrame.wndUnitFrame,  strName = "Viking Focus Target", nSaveVersion=1 })
+
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tToTFrame.wndUnitFrame,  strName = "Viking Target of Target Frame", nSaveVersion=1 })  
+  Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tToTFrame.wndUnitFrame,  strName = "Viking Target of Target Frame", nSaveVersion=1 })
 end
 
 
