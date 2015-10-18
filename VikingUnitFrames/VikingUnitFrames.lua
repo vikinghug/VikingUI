@@ -118,6 +118,15 @@ function VikingUnitFrames:OnDocumentReady()
   Apollo.RegisterSlashCommand("focus", "OnFocusSlashCommand", self)
   Apollo.RegisterSlashCommand("targetfocus", "OnTargetfocusSlashCommand", self)
 
+  if VikingLib == nil then
+    VikingLib = Apollo.GetAddon("VikingLibrary")
+  end
+
+  if VikingLib ~= nil then
+    self.db = VikingLib.Settings.RegisterSettings(self, "VikingUnitFrames", self:GetDefaults(), "Unit Frames")
+    self.generalDb = self.db.parent
+  end
+
   self.bDocLoaded = true
   self:OnRequiredFlagsChanged()
 
@@ -238,6 +247,13 @@ function VikingUnitFrames:GetDefaults()
 
 end
 
+function VikingUnitFrames:CreateUnitFrames()
+  self.tPlayerFrame = self:CreateUnitFrame("Player")
+  self.tTargetFrame = self:CreateUnitFrame("Target")
+  self.tFocusFrame = self:CreateUnitFrame("Focus")
+  self.tToTFrame = self:CreateUnitFrame("ToT")
+end
+
 --
 -- OnCharacterLoaded
 --
@@ -248,53 +264,49 @@ function VikingUnitFrames:OnCharacterLoaded()
     return
   end
 
-  if VikingLib == nil then
-    VikingLib = Apollo.GetAddon("VikingLibrary")
-  end
-
-  if VikingLib ~= nil then
-    self.db = VikingLib.Settings.RegisterSettings(self, "VikingUnitFrames", self:GetDefaults(), "Unit Frames")
-    self.generalDb = self.db.parent
-  end
-
   SendVarToRover("db", self.db)
 
-  -- PlayerFrame
-  self.tPlayerFrame = self:CreateUnitFrame("Player")
+  -- Configure unit frames
+  if not self.tPlayerFrame then
+    self:CreateUnitFrames()
+  end
 
+  -- PlayerFrame
   self:SetUnit(self.tPlayerFrame, playerUnit)
   self:SetUnitName(self.tPlayerFrame, playerUnit:GetName())
   self:SetUnitLevel(self.tPlayerFrame)
   self.tPlayerFrame.wndUnitFrame:Show(true, false)
   self:SetClass(self.tPlayerFrame)
 
+  self.eClassID =  playerUnit:GetClassId()
+
   -- Target Frame
-  self.tTargetFrame = self:CreateUnitFrame("Target")
   self:UpdateUnitFrame(self.tTargetFrame, GameLib.GetTargetUnit())
 
   -- Focus Frame
-  self.tFocusFrame = self:CreateUnitFrame("Focus")
   self:UpdateUnitFrame(self.tFocusFrame, playerUnit:GetAlternateTarget())
-
-  -- ToT Frame
-  self.tToTFrame = self:CreateUnitFrame("ToT")
-
-  self.eClassID =  playerUnit:GetClassId()
-
 end
 
+--
+-- OnWindowManagementReady
+--
+--
 function VikingUnitFrames:OnWindowManagementReady()
+  if not self.tPlayerFrame then
+    self:CreateUnitFrames()
+  end
+
   -- Register frames with WindowManagement
   Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tPlayerFrame.wndUnitFrame, strName = "Viking Player Frame", nSaveVersion=1 })
   Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tPlayerFrame.wndUnitFrame, strName = "Viking Player Frame", nSaveVersion=1 })
 
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tTargetFrame.wndUnitFrame, strName = "Viking Target Frame", nSaveVersion=1 })  
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tTargetFrame.wndUnitFrame, strName = "Viking Target Frame", nSaveVersion=1 })
   Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tTargetFrame.wndUnitFrame, strName = "Viking Target Frame", nSaveVersion=1 })
 
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tFocusFrame.wndUnitFrame,  strName = "Viking Focus Target", nSaveVersion=1 })  
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tFocusFrame.wndUnitFrame,  strName = "Viking Focus Target", nSaveVersion=1 })
   Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tFocusFrame.wndUnitFrame,  strName = "Viking Focus Target", nSaveVersion=1 })
 
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tToTFrame.wndUnitFrame,  strName = "Viking Target of Target Frame", nSaveVersion=1 })  
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.tToTFrame.wndUnitFrame,  strName = "Viking Target of Target Frame", nSaveVersion=1 })
   Event_FireGenericEvent("WindowManagementAdd",      { wnd = self.tToTFrame.wndUnitFrame,  strName = "Viking Target of Target Frame", nSaveVersion=1 })
 end
 
