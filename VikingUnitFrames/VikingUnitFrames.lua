@@ -264,8 +264,6 @@ function VikingUnitFrames:OnCharacterLoaded()
     return
   end
 
-  SendVarToRover("db", self.db)
-
   -- Configure unit frames
   if not self.tPlayerFrame then
     self:CreateUnitFrames()
