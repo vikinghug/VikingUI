@@ -84,6 +84,10 @@ local tVikingModeType = {
   [GameLib.CodeEnumClass.Spellslinger] = "Hardcore"
 }
 
+
+local GeminiLogging = Apollo.GetPackage("Gemini:Logging-1.2").tPackage
+local glog
+
 function VikingClassResources:new(o)
   o = o or {}
   setmetatable(o, self)
@@ -92,10 +96,19 @@ function VikingClassResources:new(o)
 end
 
 function VikingClassResources:Init()
-  Apollo.RegisterAddon(self, nil, nil, {"VikingActionBarFrame","VikingLibrary"})
+  Apollo.RegisterAddon(self, nil, nil, {"VikingActionBarFrame","VikingLibrary","Gemini:Logging-1.2"})
 end
 
 function VikingClassResources:OnLoad()
+
+  glog = GeminiLogging:GetLogger({
+              level = GeminiLogging.INFO,
+              pattern = "%d [%c:%n] %l - %m",
+              appender = "GeminiConsole"
+             })
+
+  glog:info(string.format("Loaded "..NAME.." - "..VERSION))
+
   self.xmlDoc = XmlDoc.CreateFromFile("VikingClassResources.xml")
   self.xmlDoc:RegisterCallback("OnDocumentReady", self)
 
@@ -131,7 +144,7 @@ function VikingClassResources:GetDefaults()
     char = {
     VikingMode = {
       VikingModeShow = false,
-    },   
+    },
     textStyle = {
       ResourceTextPercent = false,
       ResourceTextValue   = false,
@@ -148,7 +161,9 @@ function VikingClassResources:OnCharacterCreated()
   end
   self.eClassID =  unitPlayer:GetClassId()
 
-  self:CreateClassResources()
+  if self.windMain == nil then
+    self:CreateClassResources()
+  end
 
   if VikingLib == nil then
     VikingLib = Apollo.GetAddon("VikingLibrary")
@@ -160,9 +175,15 @@ function VikingClassResources:OnCharacterCreated()
 end
 
 function VikingClassResources:OnWindowManagementReady()
+
+  if self.windMain == nil then
+    self:CreateClassResources()
+  end
+
   Event_FireGenericEvent("WindowManagementRegister", { wnd = self.wndMain, strName = "Viking Class Resources"} )
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.wndPet,  strName = "Viking Pet Resource"} )
   Event_FireGenericEvent("WindowManagementAdd", { wnd = self.wndMain, strName = "Viking Class Resources"} )
+
+  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.wndPet,  strName = "Viking Pet Resource"} )
   Event_FireGenericEvent("WindowManagementAdd", { wnd = self.wndPet,  strName = "Viking Pet Resource"} )
 end
 
@@ -244,10 +265,10 @@ function VikingClassResources:UpdateProgressBar(unitPlayer, nResourceMax, nResou
 
   wndPrimaryProgress:SetMax(nProgressMax)
   wndPrimaryProgress:SetProgress(nProgressCurrent)
-  
+
   if self.eClassID == GameLib.CodeEnumClass.Stalker then
     wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "StalkerResource_SuitPowerDesc" )))
-    elseif self.eClassID == GameLib.CodeEnumClass.Engineer then 
+    elseif self.eClassID == GameLib.CodeEnumClass.Engineer then
     wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "Engineer_ResourceTooltip" )))
 	elseif self.eClassID == GameLib.CodeEnumClass.Warrior then
 	wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "WarriorResource_OverdriveCaps" )))
@@ -274,7 +295,7 @@ end
   else
     wndResourceText:Show(not self.bInnateActive and (bResourceTextPercent or bResourceTextValue))
   end
-  
+
   if self.db.char.textStyle["OutlineFont"] then
         wndResourceText:SetFont("CRB_InterfaceSmall_O")
   else
@@ -637,11 +658,8 @@ function VikingClassResources:UpdateSettingsForm(wndContainer)
   wndContainer:FindChild("ResourceText:Content:ResourceTextPercent"):SetCheck(self.db.char.textStyle["ResourceTextPercent"])
   wndContainer:FindChild("ResourceText:Content:ResourceTextValue"):SetCheck(self.db.char.textStyle["ResourceTextValue"])
   wndContainer:FindChild("ResourceText:Content:OutlineFont"):SetCheck(self.db.char.textStyle["OutlineFont"])
-  
+
 end
 
 local VikingClassResourcesInst = VikingClassResources:new()
 VikingClassResourcesInst:Init()
-
-
-

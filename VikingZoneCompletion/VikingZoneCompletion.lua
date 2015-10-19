@@ -82,7 +82,7 @@ function VikingZoneCompletion:OnDocumentReady()
 	Apollo.RegisterEventHandler("GenericEvent_ZoneMap_ZoneChanged", "OnZoneChanged", self)
 	Apollo.RegisterEventHandler("GenericEvent_ZoneMap_ZoomLevelChanged", "OnZoomLevelChanged", self)
 	Apollo.RegisterEventHandler("GenericEvent_ZoneMap_SetMapCompletionShown", "OnSetMapCompletionShown", self)
-	
+
 	Apollo.CreateTimer("ZoneCompletion_UpdateWindowTimer", 1, true)
 	Apollo.StopTimer("ZoneCompletion_UpdateWindowTimer")
 
@@ -119,7 +119,7 @@ function VikingZoneCompletion:OnOpened(wndHandler, wndControl)
 	end
 	--Scale Left Window
 	local nLeft2, nTop2, nRight2, nBottom2 = self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):GetAnchorOffsets()
-	
+
 	if self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):IsChecked() then
 		self.wndMinimizeToggle:FindChild("GrabberFrame"):Show(false)
 		self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):SetAnchorOffsets(216, nTop2, 269, nBottom2)
@@ -127,7 +127,7 @@ function VikingZoneCompletion:OnOpened(wndHandler, wndControl)
 		self.wndMinimizeToggle:FindChild("GrabberFrame"):Show(true)
 		self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):SetAnchorOffsets(-1, nTop2, 52, nBottom2)
 	end
-	
+
 end
 
 function VikingZoneCompletion:OnShow(wndParent)
@@ -154,7 +154,7 @@ function VikingZoneCompletion:OnShow(wndParent)
 	local tCurrentZone = GameLib.GetCurrentZoneMap()
 	self.wndMain:SetData(tCurrentZone and tCurrentZone.id or 0)
 	self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):SetCheck(self.bMaximized)
-	
+
 	Apollo.StartTimer("ZoneCompletion_UpdateWindowTimer")
 end
 
@@ -186,7 +186,7 @@ function VikingZoneCompletion:RedrawFromUI(wndHandler, wndControl)
 	self:RedrawAll()
 end
 
-function VikingZoneCompletion:RedrawAll() -- Also from GenericEvent_ZoneMap_ZoneChanged and XML	
+function VikingZoneCompletion:RedrawAll() -- Also from GenericEvent_ZoneMap_ZoneChanged and XML
 	if not self.wndMain or not self.wndMain:IsValid() or not self.wndMain:IsShown() then
 		Apollo.StopTimer("ZoneCompletion_UpdateWindowTimer")
 		return
@@ -240,7 +240,7 @@ function VikingZoneCompletion:RedrawAll() -- Also from GenericEvent_ZoneMap_Zone
 	end
 	local nLeft, nTop, nRight, nBottom = self.wndMain:GetAnchorOffsets()
 	self.wndMain:SetAnchorOffsets(nLeft, nTop, nRight, nTop + nHeight + 100)
-	
+
 end
 
 function VikingZoneCompletion:HelperBuildCountItem(tLocalZoneValues, nIndex)
@@ -277,7 +277,7 @@ function VikingZoneCompletion:HelperBuildPathCountItem(tPathValues)
 	if nTotal > 0 then
 		local wndPath = Apollo.LoadForm(self.xmlDoc, "CountItem", self.wndMain:FindChild("CountsContainer"), self)
 		wndPath:FindChild("CountItemIcon"):SetSprite(ktPathIcon[self.ePlayerPath] or "")
-		
+
 		local strTitle = string.format("<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ff31fcf6\">%s</P>", String_GetWeaselString(Apollo.GetString("CRB_Colon"), ktPathString[self.ePlayerPath]))
 		local strCount = string.format("<P Font=\"CRB_InterfaceSmall_O\" TextColor=\"ffffffff\">%s</P>", String_GetWeaselString(Apollo.GetString("CRB_ProgressSimple"), nComplete, nTotal))
 		wndPath:FindChild("CountQuestText"):SetText(String_GetWeaselString(Apollo.GetString("ZoneCompletion_TitleCount"), strTitle, strCount))
@@ -286,10 +286,10 @@ end
 
 function VikingZoneCompletion:OnMinimizeToggle(wndHandler, wndControl)
 	self.bMaximized = self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):IsChecked()
-	
+
 	--Scale Left Window
 	local nLeft2, nTop2, nRight2, nBottom2 = self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):GetAnchorOffsets()
-	
+
 	if self.bMaximized then
 		self.wndMinimizeToggle:FindChild("GrabberFrame"):Show(false)
 		self.wndMinimizeToggle:FindChild("ZoneCompletionMinimizeToggleBtn"):SetAnchorOffsets(216, nTop2, 269, nBottom2)

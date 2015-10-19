@@ -182,7 +182,7 @@ function VikingZoneMap:CreatePOIIcons()
 		[self.eObjectTypeQuest]					= {strSprite = "",												eCategory = ktMarkerCategories.TrackedQuests,		strType = Apollo.GetString("MiniMap_QuestObjectives")},
 		[self.eObjectTypeChallenge]				= {strSprite = "Icon_MapNode_Map_Generic_POI",					eCategory = ktMarkerCategories.Challenges,			strType = Apollo.GetString("CBCrafting_Challenge")}, -- TODO
 		[self.eObjectTypePublicEvent] 			= {strSprite = "sprMap_IconCompletion_Challenge",				eCategory = ktMarkerCategories.PublicEvents,		strType = Apollo.GetString("ZoneMap_PublicEvent")}, -- TODO
-		-- Mission sprites will be set up in ToggleWindow	
+		-- Mission sprites will be set up in ToggleWindow
 		[self.eObjectTypeMission] 				= {strSprite = "",												eCategory = ktMarkerCategories.Missions,			strType = ""},
 		[self.eObjectTypeNemesisRegion]			= {strSprite = "",												eCategory = ktMarkerCategories.NemesisRegions,		strType = Apollo.GetString("ZoneMap_NemesisRegions")},
 		[self.eObjectTypeLevelBandRegion]		= {strSprite = "",												eCategory = ktMarkerCategories.LevelBands,			strType = ""},
@@ -545,7 +545,7 @@ function VikingZoneMap:OnRestore(eType, tSavedData)
 	self.bControlPanelShown = tSavedData.bControlPanelShown -- TODO: Not actually a boolean, OnRestore bugged with booleans at the moment
 	if tSavedData.tCheckedOptions then
 		self.tButtonChecks = tSavedData.tCheckedOptions
-		
+
 		self:RehideAllToggledIcons()
 	end
 	if tSavedData.eZoomLevel then
@@ -659,7 +659,7 @@ function VikingZoneMap:OnDocumentReady()
 	Apollo.RegisterEventHandler("LevelUpUnlock_WorldMapNewZone_Algoroc", 					"OnLevelUpUnlock_WorldMapNewZone_Algoroc", self)
 	Apollo.RegisterEventHandler("LevelUpUnlock_WorldMapCapital_Illium", 					"OnLevelUpUnlock_WorldMapCapital_Illium", self)
 	Apollo.RegisterEventHandler("LevelUpUnlock_WorldMapCapital_Thayd", 						"OnLevelUpUnlock_WorldMapCapital_Thayd", self)
-	
+
 	Apollo.RegisterEventHandler("ContentFinder_OpenMapToNavPoint",							"HelperGoToMap", self)
 
 	--Group Events
@@ -679,7 +679,7 @@ function VikingZoneMap:OnDocumentReady()
 	Apollo.RegisterEventHandler("NavPointCleared",						"OnNavPointCleared", self)
 	Apollo.RegisterEventHandler("NavPointSet",							"OnNavPointSet", self)
 	Apollo.RegisterEventHandler("SetNavPointFailed",					"OnSetNavPointFailed", self)
-	
+
 	-- City Directions
 	Apollo.RegisterTimerHandler("ZoneMap_TimeOutCityDirectionMarker",	"OnZoneMap_TimeOutCityDirectionMarker", self)
 	Apollo.CreateTimer("ZoneMap_TimeOutCityDirectionMarker", 300, false)
@@ -819,7 +819,7 @@ function VikingZoneMap:OnDocumentReady()
 	end
 
 	self:BuildShownTypesArrays()
-	
+
 	self.wndZoneMap:ShowLevelBandLabels(true)
 
 	-- Top two options
@@ -899,7 +899,7 @@ function VikingZoneMap:OnDocumentReady()
 			end
 		end
 	end
-	
+
 	self:RehideAllToggledIcons()
 end
 
@@ -961,7 +961,7 @@ function VikingZoneMap:ToggleWindow()
 			local tPoint = GameLib.GetNavPoint()
 			self:OnNavPointSet(tPoint and tPoint.tPosition or nil)
 		end
-		
+
 
 		if self.bControlPanelShown then
 			self:OnToggleControlsOn()
@@ -985,7 +985,7 @@ function VikingZoneMap:ToggleWindow()
 
 		Event_FireGenericEvent("MapGhostMode", false)
 		self.wndMain:ToFront()
-		
+
 		--tPathSoldier 		= {strSprite = "Icon_MapNode_Map_Soldier",					strType = Apollo.GetString("ZoneMap_SoldierMission")}, -- must always match the sprite passed with the event
 		--tPathSettler 		= {strSprite = "Icon_MapNode_Map_Settler",					strType = Apollo.GetString("ZoneMap_SettlerMission")}, -- must always match the sprite passed with the event
 		--tPathScientist 		= {strSprite = "Icon_MapNode_Map_Scientist",				strType = Apollo.GetString("ZoneMap_ScientistMission")}, -- must always match the sprite passed with the event
@@ -1007,7 +1007,7 @@ function VikingZoneMap:ToggleWindow()
 			self.tPOITypes[self.eObjectTypeMission] = {strSprite = "Icon_MapNode_Map_Scientist", strType = Apollo.GetString("ZoneMap_ScientistMission")}
 			self.wndZoneMap:SetOverlayTypeInfo(self.eObjectTypeMission, ktHexColor.tPath.crBorder, ktHexColor.tPath.crInterior, "sprMM_SmallIconScientist", "sprMM_SmallIconScientist")
 		end
-		
+
 		wndMarkerPathIcon:SetSprite(self.tPOITypes[self.eObjectTypeMission].strSprite)
 		self:OnZoomChange()
 
@@ -1414,7 +1414,7 @@ end
 function VikingZoneMap:OnZoneChanged()
 	Event_FireGenericEvent("GenericEvent_ZoneMap_ZoneChanged", self.idCurrentZone)
 	self:ReloadNemesisRegions()
-	
+
 	if self.tNavPointLoc then
 		self:OnNavPointSet(self.tNavPointLoc)
 	end
@@ -1428,19 +1428,19 @@ function VikingZoneMap:HelperCheckAndBuildSubzones(tZoneInfo, eZoomLevel) -- Thi
 
 	local tSubZoneInfo = self.wndZoneMap:GetAllSubZoneInfo(tZoneInfo.parentZoneId ~= 0 and tZoneInfo.parentZoneId or tZoneInfo.id)
 	local nHeightOfEntry = 0
-	
+
 	for idx, tZoneEntry in pairs(tSubZoneInfo or {}) do
 		local wndCurr = self:FactoryProduce(self.wndMain:FindChild("SubzoneListContent"), "ZoneComplexListEntry", tZoneEntry.id)
 		wndCurr:FindChild("ZoneComplexListBtn"):SetData(tZoneEntry)
 		wndCurr:FindChild("ZoneComplexListBtn"):SetCheck(tZoneInfo.id == tZoneEntry.id)
 		wndCurr:FindChild("ZoneComplextListTitle"):SetText(tZoneEntry.strName)
-		nHeightOfEntry = wndCurr:GetHeight() 
+		nHeightOfEntry = wndCurr:GetHeight()
 	end
 
 	self.wndMain:FindChild("SubzoneListContent"):ArrangeChildrenVert(Window.CodeEnumArrangeOrigin.LeftOrTop)
 	self.wndMain:FindChild("SubzoneToggle"):Show(tSubZoneInfo and #tSubZoneInfo > 0)
 	if tSubZoneInfo and #tSubZoneInfo > 0 then
-		local nSubZoneTotalCount = #tSubZoneInfo 
+		local nSubZoneTotalCount = #tSubZoneInfo
 		local nLeft, nTop, nRight, nBottom = self.wndMain:FindChild("SubzoneList"):GetAnchorOffsets()
 		self.wndMain:FindChild("SubzoneList"):SetAnchorOffsets(nLeft, nTop, nRight, nTop + (nSubZoneTotalCount * nHeightOfEntry) + 9) -- + 9 of top bottom padding
 	end
@@ -1449,7 +1449,7 @@ end
 
 function VikingZoneMap:HelperBuildZoneDropdown(idContinent) -- This only calls on button events, like picking from a dropdown menu
 	self.wndMain:FindChild("ZoneSelectItems"):DestroyChildren()
-	
+
 	local tZoneInfo = self.wndZoneMap:GetContinentZoneInfo(idContinent)
 	--local tZoneInfo = self.wndZoneMap:GetContinentZoneInfo(tZoneInfo.parentZoneId ~= 0 and tZoneInfo.parentZoneId or tZoneInfo.id)
 	local nHeightOfEntry = 0
@@ -1464,7 +1464,7 @@ function VikingZoneMap:HelperBuildZoneDropdown(idContinent) -- This only calls o
 		end
 	end
 	self.wndMain:FindChild("ZoneSelectItems"):ArrangeChildrenVert(Window.CodeEnumArrangeOrigin.LeftOrTop)
-	
+
 	if nZoneTotalCount > 0 then
 		local nLeft, nTop, nRight, nBottom = self.wndMain:FindChild("ZoneComplexList"):GetAnchorOffsets()
 		self.wndMain:FindChild("ZoneComplexList"):SetAnchorOffsets(nLeft, nTop, nRight, nTop + (nZoneTotalCount * nHeightOfEntry) + 9) -- + 9 of top bottom padding
@@ -1718,20 +1718,20 @@ function VikingZoneMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 		if tMap == nil then
 			return
 		end
-		
+
 		for key, tHexes in pairs(tMap) do -- hex groups
 			local strName = ""
 
 			if self.tButtonChecks[tHexes.eType] then
 				local bShowRegion = true
 				local strType = self.tPOITypes[tHexes.eType].strType
-				
+
 				if tHexes.eType == self.eObjectTypeMission then
 					self.tTooltipCache[tHexes.userData] = true
 					strName = tHexes.userData:GetName()
 				elseif tHexes.eType == self.eObjectTypePublicEvent then
 					self.tTooltipCache[tHexes.userData] = true
-					
+
 					if PublicEvent.is(tHexes.userData) then
 						strName = tHexes.userData:GetName()
 					elseif PublicEventObjective.is(tHexes.userData) then
@@ -1749,7 +1749,7 @@ function VikingZoneMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 					self.tTooltipCache[tHexes.userData] = true
 					self.tTooltipCompareTable[tHexes.userData] = tHexes.eType
 					bShowRegion = false
-					
+
 					local tRegion = self.wndZoneMap:GetNemesisRegionInfo(tHexes.userData)
 					if tRegion ~= nil then
 						strFaction = string.format("<P><T Font=\"%s\" TextColor=\"%s\">%s</T></P>", "CRB_InterfaceMedium", "UI_TextHoloTitle", String_GetWeaselString(Apollo.GetString("ZoneMap_NemesisTooltipLabel"), tRegion.strFactionName))
@@ -1760,28 +1760,28 @@ function VikingZoneMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 					local strLevel = string.format("<T Font=\"%s\" TextColor=\"%s\">(%s)</T>", "CRB_InterfaceMedium", ktConColors[tHexes.userData:GetColoredDifficulty()], tHexes.userData:GetConLevel())
 					strName = string.format("<T Font=\"%s\" TextColor=\"%s\">%s %s</T>", "CRB_InterfaceMedium", "ffffffff", tHexes.userData:GetTitle(), strLevel)
 				end
-				
+
 				if strName ~= "" then
 				if not tTooltips[tHexes.eType] then
-					tTooltips[tHexes.eType] = 
+					tTooltips[tHexes.eType] =
 					{
 						strCategory = strType,
 						tStrings = {}
 					}
-					
+
 					table.insert(tTypesUsed, tHexes.eType)
 				end
-				
+
 				local strName = string.format("<T Font=\"%s\" TextColor=\"%s\">%s</T>", "CRB_InterfaceMedium", "ffffffff", strName)
-				
+
 				if not tTooltips[tHexes.eType].tStrings[strName] then
 					tTooltips[tHexes.eType].tStrings[strName] = {}
 				end
-				
+
 				if tHexes.unit then
 					table.insert(tTooltips[tHexes.eType].tStrings[strName], tHexes.unit:GetId())
 				end
-				
+
 				self.tTooltipCompareTable[tHexes.userData] = tHexes.eType
 
 				if bShowRegion then
@@ -1796,14 +1796,14 @@ function VikingZoneMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 		for key, tHexes in pairs(tMapObjects) do
 			if self.tButtonChecks[self.tPOITypes[tHexes.eType].eCategory] or tHexes.eType  == self.eObjectTypeNavPoint or tHexes.eType  == self.eObjectTypeMapTrackedUnit then
 				local strName = ""
-				local strType = self.tPOITypes[tHexes.eType] and self.tPOITypes[tHexes.eType].strType or eType					
-				
+				local strType = self.tPOITypes[tHexes.eType] and self.tPOITypes[tHexes.eType].strType or eType
+
 				if tHexes.eType == self.eObjectTypeMission or tHexes.eType == self.eObjectTypePublicEvent or tHexes.eType == self.eObjectTypeChallenge then
 					self.tTooltipCache[tHexes.userData] = true
 					strName = tHexes.userData:GetName()
 				elseif tHexes.eType == self.eObjectTypePublicEvent then
 					self.tTooltipCache[tHexes.userData] = true
-					
+
 					if PublicEvent.is(tHexes.userData) then
 						strName = tHexes.userData:GetName()
 					elseif PublicEventObjective.is(tHexes.userData) then
@@ -1827,50 +1827,50 @@ function VikingZoneMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 				else
 					strName = tHexes.strName
 				end
-				
+
 				if not tTooltips[tHexes.eType] then
-					tTooltips[tHexes.eType] = 
+					tTooltips[tHexes.eType] =
 					{
 						strCategory = strType,
 						tStrings = {}
 					}
-					
+
 					table.insert(tTypesUsed, tHexes.eType)
 				end
-				
+
 				local strName = string.format("<T Font=\"%s\" TextColor=\"%s\">%s</T>", "CRB_InterfaceMedium", "ffffffff", strName)
 				if not tTooltips[tHexes.eType].tStrings[strName] then
 					tTooltips[tHexes.eType].tStrings[strName] = {}
 				end
-				
+
 				if tHexes.unit then
 					table.insert(tTooltips[tHexes.eType].tStrings[strName], tHexes.unit:GetId())
 				end
 			end
 		end
 	end
-	
-	
+
+
 	table.sort(tTypesUsed)
-	
-	
+
+
 	for idx, eCategory in pairs(tTypesUsed) do
 		local tCategoryTooltips = tTooltips[eCategory]
-		
+
 		strTooltipString = strTooltipString .. string.format("<P><T Font=\"%s\" TextColor=\"%s\">%s</T></P>", "CRB_InterfaceMedium", "UI_TextHoloTitle", tCategoryTooltips.strCategory)
-		
+
 		for strName, tIds in pairs(tCategoryTooltips.tStrings) do
 			local nCount = 0
 			local strCount = ""
 			for idUnit, bExists in pairs(tIds) do
 				nCount = nCount + 1
 			end
-			
+
 			if nCount > 1 then
 				strCount = String_GetWeaselString(Apollo.GetString("Vendor_ItemCount"), nCount)
 			end
-			
-			strTooltipString = strTooltipString .. string.format("<P>-   " .. strName .. " " .. strCount .. "</P>")				
+
+			strTooltipString = strTooltipString .. string.format("<P>-   " .. strName .. " " .. strCount .. "</P>")
 		end
 	end
 
@@ -2290,21 +2290,21 @@ function VikingZoneMap:ReloadNemesisRegions()
 			local tHexes = self.wndZoneMap:GetHexGroupHexes(self.idCurrentZone, tRegion.hexGroupId)
 			self.wndZoneMap:AddRegion(self.eObjectTypeNemesisRegion, 0, tHexes, tRegion.id)
 		end
-		
+
 		self.wndZoneMap:HighlightRegionsByType(self.eObjectTypeNemesisRegion)
 	end
 end
 
 function VikingZoneMap:ReloadLevelBands()
-	self.wndZoneMap:RemoveRegionByType(self.eObjectTypeLevelBandRegion)	
+	self.wndZoneMap:RemoveRegionByType(self.eObjectTypeLevelBandRegion)
 
 	local tLevelBands = self.wndZoneMap:GetLevelBandRegionInfo(self.idCurrentZone)
 	if tLevelBands ~= nil then
 		for idx, tLevelBand in pairs(tLevelBands) do
 			local tHexes = self.wndZoneMap:GetHexGroupHexes(self.idCurrentZone, tLevelBand.hexGroupId)
 			self.wndZoneMap:AddRegion(self.eObjectTypeLevelBandRegion, 0, tHexes, tLevelBand.id)
-		end	
-			
+		end
+
 		self.wndZoneMap:HighlightRegionsByType(self.eObjectTypeLevelBandRegion)
 	end
 end
@@ -2573,7 +2573,7 @@ function VikingZoneMap:OnUnitDelayedCreated(unitMade)
 
 		if not tInteract.Busy and (not tMarkerInfo.bHideIfHostile
 			or (tMarkerInfo.bHideIfHostile and unitMade:GetDispositionTo(GameLib.GetPlayerUnit()) ~= Unit.CodeEnumDisposition.Hostile)) then
-			
+
 			local mapIconReference = self.wndZoneMap:AddUnit(unitMade, objectType, tInfo, tMarkerOptions, self:IsTypeCurrentlyHidden(objectType))
 			self.tUnitsShown[unitMade:GetId()] = { unitValue = unitMade }
 
@@ -2585,7 +2585,7 @@ function VikingZoneMap:OnUnitDelayedCreated(unitMade)
 							if self.tGroupMembers[idxMember].mapObject ~= nil then
 								self.wndZoneMap:RemoveObject(self.tGroupMembers[idxMember].mapObject)
 							end
-	
+
 							self.tGroupMembers[idxMember].mapObject = mapIconReference
 						end
 						break
@@ -3208,7 +3208,7 @@ end
 
 function VikingZoneMap:OnCityDirectionBtn(wndHandler, wndControl)
 	GameLib.MarkCityDirection(wndHandler:GetData())
-	
+
 	if self.wndCityDirections ~= nil and self.wndCityDirections:IsValid() then
 		self.wndCityDirections:Close()
 	end
@@ -3540,7 +3540,7 @@ function VikingZoneMap:OnNavPointSet(tLoc)
 	if not self.wndZoneMap or not self.wndZoneMap:IsValid() or not tLoc then
 		return
 	end
-	
+
 	local tInfo =
 	{
 		objectType = self.eObjectTypeNavPoint,
@@ -3550,7 +3550,7 @@ function VikingZoneMap:OnNavPointSet(tLoc)
 		crEdge = CColor.new(1, 1, 1, 1),
 		bNeverShowOnEdge = false
 	}
-	
+
 	self.wndZoneMap:RemoveObjectsByType(self.eObjectTypeNavPoint)
 	self.wndZoneMap:AddObject(self.eObjectTypeNavPoint, tLoc, "Nav Pt", tInfo, {bFixedSizeSmall = false}, false)
 	self.tNavPointLoc = tLoc
@@ -3572,7 +3572,7 @@ function VikingZoneMap:SetNavPoint(nX, nY)
 	end
 
 	local eZoomLevel = self.wndZoneMap:GetDisplayMode()
-	local tZoneMapEnums = ZoneMapWindow.CodeEnumDisplayMode	
+	local tZoneMapEnums = ZoneMapWindow.CodeEnumDisplayMode
 	if eZoomLevel ~= tZoneMapEnums.Continent then
 		local tZoneInfo = self.wndZoneMap:GetZoneInfo()
 		GameLib.SetNavPoint(self.wndZoneMap:GetWorldLocAtPoint(nX, nY), tZoneInfo and tZoneInfo.id or nil)
@@ -3613,7 +3613,7 @@ function VikingZoneMap:HelperGoToMap(idWorldZone)
 		self:HelperBuildZoneDropdown(tZoneInfo.continentId)
 		self.wndMain:FindChild("ZoneComplexToggle"):SetText(tZoneInfo.strName)
 	end
-	
+
 	if self.tNavPointLoc then
 		self:OnNavPointSet(self.tNavPointLoc)
 	end
@@ -3668,7 +3668,7 @@ function VikingZoneMap:OnLevelUpUnlock_WorldMapDungeon_ProtogamesAcademyExile()
 	if tCurrentZoneInto == nil then
 		return
 	end
-	
+
 	local tZones = ktGlobalPortalInfo.ProtogamesAcademyExile.idZones
 	if tZones ~= nil then
 		for idx, idZone in pairs(tZones) do
@@ -3678,7 +3678,7 @@ function VikingZoneMap:OnLevelUpUnlock_WorldMapDungeon_ProtogamesAcademyExile()
 			end
 		end
 	end
-	
+
 	self:HelperGoToMap(ktGlobalPortalInfo.ProtogamesAcademyExile.idZones[1])
 end
 
@@ -3687,7 +3687,7 @@ function VikingZoneMap:OnLevelUpUnlock_WorldMapDungeon_ProtogamesAcademyDominion
 	if tCurrentZoneInto == nil then
 		return
 	end
-	
+
 	local tZones = ktGlobalPortalInfo.ProtogamesAcademyDominion.idZones
 	if tZones ~= nil then
 		for idx, idZone in pairs(tZones) do
@@ -3697,7 +3697,7 @@ function VikingZoneMap:OnLevelUpUnlock_WorldMapDungeon_ProtogamesAcademyDominion
 			end
 		end
 	end
-	
+
 	self:HelperGoToMap(ktGlobalPortalInfo.ProtogamesAcademyDominion.idZones[1])
 end
 

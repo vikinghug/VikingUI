@@ -30,7 +30,7 @@ end
 
 function VikingGroupDisplayOptions:OnLoad()
 	self.xmlDoc = XmlDoc.CreateFromFile("VikingGroupDisplayOptions.xml")
-	self.xmlDoc:RegisterCallback("OnDocumentReady", self) 
+	self.xmlDoc:RegisterCallback("OnDocumentReady", self)
 end
 
 function VikingGroupDisplayOptions:OnDocumentReady()
@@ -108,7 +108,7 @@ function VikingGroupDisplayOptions:RedrawAll() -- The button check and various U
 	if not self.wndMain or not self.wndMain:IsValid() then -- Will rely on the initialize to RedrawAll
 		return
 	end
-	
+
 	local nGroupCount = GroupLib.GetMemberCount()
 	if nGroupCount == 0 then
 		return
@@ -176,7 +176,7 @@ function VikingGroupDisplayOptions:HelperRedrawSpecific(strMenuName, tProvidedVa
 	else
 		self.wndMain:FindChild("ConvertToRaid"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListDisabled"))
 	end
-	
+
   if Hide == 1 then
     self.wndMain:FindChild("HideMembers"):Enable(true)
     self.wndMain:FindChild("HideMembers"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))

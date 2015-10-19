@@ -100,7 +100,7 @@ end
 function InventoryBag:OnLoad()
 	self.xmlDoc = XmlDoc.CreateFromFile("VikingInventoryBag.xml")
 	self.xmlDoc:RegisterCallback("OnDocumentReady", self)
-	
+
 	self.nAltCurrencySelected = knDefaultAltCurrency
 end
 
@@ -282,7 +282,7 @@ function InventoryBag:OnDocumentReady()
 		wnd:FindChild("PickerEntryBtn"):SetData(idx)
 		wnd:FindChild("PickerEntryBtn"):SetCheck(idx == self.nAltCurrencySelected)
 		wnd:FindChild("PickerEntryBtnText"):SetText(tData.strTitle)
-		
+
 		local strDescription = tData.strDescription
 		if tData.eType == AccountItemLib.CodeEnumAccountCurrency.Omnibits then
 			local tOmniBitInfo = GameLib.GetOmnibitsBonusInfo()
@@ -292,7 +292,7 @@ function InventoryBag:OnDocumentReady()
 			end
 			strDescription = strDescription.."\n"..String_GetWeaselString(Apollo.GetString("CRB_OmniBits_EarningsWeekly"), nTotalWeeklyOmniBitBonus)
 		end
-		
+
 		wnd:FindChild("PickerEntryBtn"):SetTooltip(strDescription)
 		tData.wnd = wnd
 	end
@@ -416,7 +416,7 @@ function InventoryBag:UpdateBagSlotItems() -- update our bag display
 	for idx = 1, knMaxBags do
 		local itemBag = self.wndMainBagWindow:GetBagItem(idx)
 		local wndCtrl = self.wndMain:FindChild("BagBtn"..idx)
-		
+
 		if itemBag ~= wndCtrl:GetData() then
 			wndCtrl:SetData(itemBag)
 			if itemBag then
@@ -724,7 +724,7 @@ function InventoryBag:HelperSetSalvageEnable()
 	if unitPlayer == nil or not unitPlayer:IsValid() then
 		return
 	end
-	
+
 	local tInvItems = unitPlayer:GetInventoryItems()
 	for idx, tItem in ipairs(tInvItems) do
 		if tItem and tItem.itemInBag and tItem.itemInBag:CanSalvage() and not tItem.itemInBag:CanAutoSalvage() then
@@ -869,10 +869,10 @@ end
 -----------------------------------------------------------------------------------------------
 
 function InventoryBag:OnGenericEvent_SplitItemStack(item)
-	if not item then 
-		return 
+	if not item then
+		return
 	end
-	
+
 	local nStackCount = item:GetStackCount()
 	if nStackCount < 2 then
 		self.wndSplit:Show(false)
@@ -918,17 +918,17 @@ function InventoryBag:OnTutorial_RequestUIAnchor(eAnchor, idTutorial, strPopupTe
 		[GameLib.CodeEnumTutorialAnchor.VikingInventory] 		= true,
 		[GameLib.CodeEnumTutorialAnchor.InventoryItem] 	= true,
 	}
-	
-	if not tAnchors[eAnchor] or not self.wndMain then 
-		return 
+
+	if not tAnchors[eAnchor] or not self.wndMain then
+		return
 	end
-	
+
 	local tAnchorMapping =
 	{
 		[GameLib.CodeEnumTutorialAnchor.VikingInventory] 		= self.wndMain,
 		[GameLib.CodeEnumTutorialAnchor.InventoryItem] 	= self.wndMain:FindChild("BGGridArt")
 	}
-	
+
 	if tAnchorMapping[eAnchor] then
 		Event_FireGenericEvent("Tutorial_ShowCallout", eAnchor, idTutorial, strPopupText, tAnchorMapping[eAnchor])
 	end

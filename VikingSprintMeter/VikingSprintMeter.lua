@@ -70,7 +70,7 @@ function VikingSprintMeter:GetDefaults()
   return {
     char = {
       SprintMeterShow = false
-    }  
+    }
   }
 end
 

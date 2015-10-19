@@ -411,7 +411,7 @@ function VikingTooltips:UnitTooltipGen(wndContainer, unitSource, strProp)
 	local bSkipFormatting = false -- used to identify when we switch to item tooltips (aka pinata loot)
 	local bNoDisposition = false -- used to replace dispostion assets when they're not needed
 	local bHideFormSecondary = true
-	
+
 	if not unitSource and strProp == "" then
 		wndContainer:SetTooltipForm(nil)
 		wndContainer:SetTooltipFormSecondary(nil)
@@ -428,7 +428,7 @@ function VikingTooltips:UnitTooltipGen(wndContainer, unitSource, strProp)
 	end
 
 	if not self.wndUnitTooltip or not self.wndUnitTooltip:IsValid() then
-		
+
 		self.wndUnitTooltip = wndContainer:LoadTooltipForm("TooltipsForms.xml", "UnitTooltip_Base", self)
 	end
 
@@ -500,7 +500,7 @@ function VikingTooltips:UnitTooltipGen(wndContainer, unitSource, strProp)
 				local wndReward = Apollo.LoadForm("TooltipsForms.xml", "UnitTooltip_Reward", wndMiddleDataBlockContent, self)
 				wndReward:FindChild("Icon"):SetSprite(ktRewardToIcon[strRewardType])
 				wndReward:FindChild("Label"):SetText(String_GetWeaselString(Apollo.GetString("Tooltip_TitleReward"), tRewardInfo.strTitle, ktRewardToString[strRewardType]))
-				
+
 				-- Adjust height to fit text
 				wndReward:FindChild("Label"):SetHeightToContentHeight()
 				if wndReward:FindChild("Label"):GetHeight() > wndReward:GetHeight() then
@@ -2160,7 +2160,7 @@ local function GenerateBuffTooltipForm(luaCaller, wndParent, splSource, tFlags)
 	-- General Description
 	wndTooltip:FindChild("GeneralDescriptionString"):SetText(wndParent:GetBuffTooltip())
 	wndTooltip:FindChild("GeneralDescriptionString"):SetHeightToContentHeight()
-	
+
 	-- Set Background Sprite & Color
 	VikingTooltips:ApplyVikingHudBackground(wndTooltip, "dd141122", "darkgray")
 
@@ -2193,7 +2193,7 @@ local function GenerateHousingBuffTooltipForm(luaCaller, wndParent, splSource, t
 	wndTooltip:FindChild("GeneralDescriptionString"):SetHeightToContentHeight()
 
 	wndTooltip:FindChild("DispellableString"):SetText("")
-	
+
 	-- Set Background Sprite & Color
 	VikingTooltips:ApplyVikingHudBackground(wndTooltip, "dd141122", "darkgray")
 

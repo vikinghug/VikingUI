@@ -232,7 +232,7 @@ local dbmt = {
 						error("Attempt to access character-specific field " .. section .. " before character loaded.")
 					end
 					-- the key has changed so we need to obtain it again.
-					key = keys[section]	
+					key = keys[section]
 				end
 				local defaultTbl = rawget(t, "defaults")
 				local defaults = defaultTbl and defaultTbl[section]

@@ -179,11 +179,11 @@ function Dialog:DrawResponses(eState, idQuest, tResponseList)
 			wndCurr:FindChild("ResponseItemBtn"):SetData(drResponse)
 			nResponseHeight = nResponseHeight + wndCurr:GetHeight()
 		else
-			
+
 			local queResponse = DialogSys.GetViewableQuest(drResponse:GetQuestId())
 			local nConLevel = queResponse and queResponse:GetTitle() == drResponse:GetText() and queResponse:GetConLevel() or 0
 			local strText = nConLevel > 0 and string.format("%s (%s)", drResponse:GetText(), nConLevel) or drResponse:GetText()
-			
+
 			local crTextColor = eResponseType == DialogResponse.DialogResponseType_QuestMoreInfo and kcrMoreInfoColor or kcrDefaultColor
 			wndCurr = Apollo.LoadForm(self.xmlDoc, "ResponseItem", self.wndPlayer:FindChild("ResponseItemContainer"), self)
 			wndCurr:FindChild("ResponseItemIcon"):SetSprite(self:HelperComputeIconPath(eResponseType))
@@ -205,10 +205,10 @@ function Dialog:DrawResponses(eState, idQuest, tResponseList)
 
 	self.wndPlayer:SetAnchorOffsets(self.nWndPlayerLeft, self.nWndPlayerTop, self.nWndPlayerRight, self.nWndPlayerBottom + nOnGoingHeight + nResponseHeight)
 	self.wndPlayer:Invoke()
-	
-	if self.tPendingTutorialData then		
+
+	if self.tPendingTutorialData then
 		Event_FireGenericEvent("Tutorial_ShowCallout", self.tPendingTutorialData.eAnchor, self.tPendingTutorialData.idTutorial, self.tPendingTutorialData.strPopupText, self.wndPlayer:FindChild("ResponseItemBtn"))
-		
+
 		self.tPendingTutorialData = nil
 	end
 end
@@ -458,7 +458,7 @@ function Dialog:DrawNpcBubble(wndArg, eState, idQuest)
 		wndArg:Show(false)
 		return
 	end
-	
+
 	local strText = cdDialog:GetText()
 	if not strText or string.len(strText) == 0 then
 		wndArg:Show(false)
@@ -470,7 +470,7 @@ function Dialog:DrawNpcBubble(wndArg, eState, idQuest)
 	if cdDialog:HasVO() then
 		cdDialog:PlayVO()
 	end
-	
+
 	-- Rewards
 	wndArg:FindChild("GivenRewardsText"):Show(false)
 	wndArg:FindChild("ChoiceRewardsText"):Show(false)
@@ -699,20 +699,20 @@ function Dialog:OnTutorial_RequestUIAnchor(eAnchor, idTutorial, strPopupText)
 		[GameLib.CodeEnumTutorialAnchor.QuestIntroduction] 	= true,
 		[GameLib.CodeEnumTutorialAnchor.QuestAccept] 		= true,
 	}
-	
+
 	if not tAnchors[eAnchor] or not self.wndPlayer then
 		return
 	end
-	
+
 	if not self.wndPlayer:FindChild("ResponseItemBtn") then
 		self.tPendingTutorialData = {eAnchor = eAnchor, idTutorial = idTutorial, strPopupText = strPopupText}
-	else	
-		local tAnchorMapping = 
+	else
+		local tAnchorMapping =
 		{
 			[GameLib.CodeEnumTutorialAnchor.QuestIntroduction] 	= self.wndPlayer:FindChild("ResponseItemBtn"),
 			[GameLib.CodeEnumTutorialAnchor.QuestAccept] 		= self.wndPlayer:FindChild("ResponseItemBtn"),
 		}
-		
+
 		if tAnchorMapping[eAnchor] then
 			Event_FireGenericEvent("Tutorial_ShowCallout", eAnchor, idTutorial, strPopupText, tAnchorMapping[eAnchor])
 		end

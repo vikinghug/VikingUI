@@ -332,10 +332,10 @@ do
 end
 
 function GeminiLogging:OnLoad()
-	
+
 	inspect = Apollo.GetPackage("Drafto:Lib:inspect-1.2").tPackage
 	self.console = Apollo.GetAddon("GeminiConsole")
-	
+
 	-- The GeminiLogging.DEBUG Level designates fine-grained informational events that are most useful to debug an application
 	-- The GeminiLogging.INFO level designates informational messages that highlight the progress of the application at coarse-grained level
 	-- The GeminiLogging.WARN level designates potentially harmful situations
@@ -364,7 +364,7 @@ function GeminiLogging:GetLogger(optSettings)
 	local opt
 
 	-- Default options
-	if not optSettings or type(optSettings) ~= "table" then 
+	if not optSettings or type(optSettings) ~= "table" then
 		opt = defaultOpts
 	else
 		-- Create table and populate with defaults if no override present
@@ -376,7 +376,7 @@ function GeminiLogging:GetLogger(optSettings)
 
 	-- Initialize logger object
 	local logger = {}
-	
+
 	-- Set appender
 	if not opt.appender or type(opt.appender) == "string" then
 		logger.append = self:GetAppender(opt.appender)
@@ -390,14 +390,14 @@ function GeminiLogging:GetLogger(optSettings)
 		Print("Invalid appender")
 		return nil
 	end
-	
+
 	-- Set pattern
 	logger.pattern = opt.pattern
-	
+
 	-- Set level
 	logger.level = self.LEVEL[opt.level]
 	local order = self.LEVEL[logger.level]
-	
+
 	-- Set logger functions (debug, info, etc.) based on level option
 	for i=1,self.MAX_LEVELS do
 		local currentLevel = i
@@ -431,7 +431,7 @@ function GeminiLogging:GetLogger(optSettings)
 end
 
 function GeminiLogging:PrepareLogMessage(message, level, caller, line)
-	
+
 	if type(message) ~= "string" then
 		if type(message) == "userdata" then
 			message = inspect(getmetatable(message))
@@ -439,7 +439,7 @@ function GeminiLogging:PrepareLogMessage(message, level, caller, line)
 			message = inspect(message)
 		end
 	end
-	
+
 	local logMsg = self.pattern
 	message = string.gsub(message, "%%", "%%%%")
 	logMsg = string.gsub(logMsg, "%%d", os.date("%I:%M:%S%p"))		-- only time, in 12-hour AM/PM format. This could be configurable...
@@ -447,7 +447,7 @@ function GeminiLogging:PrepareLogMessage(message, level, caller, line)
 	logMsg = string.gsub(logMsg, "%%c", caller)
 	logMsg = string.gsub(logMsg, "%%n", line)
 	logMsg = string.gsub(logMsg, "%%m", message)
-	
+
 	return logMsg
 end
 

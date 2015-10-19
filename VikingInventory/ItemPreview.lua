@@ -81,7 +81,7 @@ function ItemPreview:OnGenericEvent_LoadItemPreview(item)
 	if not self.wndMain or not self.wndMain:IsValid() then
 		self.wndMain = Apollo.LoadForm(self.xmlDoc, "ItemPreviewForm", "TooltipStratum", self)
 		self.wndMain:FindChild("PreviewWindow"):SetCostume(GameLib.GetPlayerUnit())
-	
+
 		local nWndLeft, nWndTop, nWndRight, nWndBottom = self.wndMain:GetRect()
 		local nWndWidth = nWndRight - nWndLeft
 		local nWndHeight = nWndBottom - nWndTop

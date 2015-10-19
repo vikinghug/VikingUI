@@ -163,7 +163,7 @@ function VikingContextMenuPlayer:RedrawAllFriend()
 		self:HelperBuildRegularButton(wndButtonList, "BtnAccountWhisper", Apollo.GetString("ContextMenu_AccountWhisper"))
 	end
 
-	if not bInGroup or (GroupLib.GetGroupMember(1).bCanInvite and bCanWhisper) then 
+	if not bInGroup or (GroupLib.GetGroupMember(1).bCanInvite and bCanWhisper) then
 	--In SocialPanel, we don't care if they are part of a group, because we can't reliably test it.
 	self:HelperBuildRegularButton(wndButtonList, "BtnInvite", Apollo.GetString("ContextMenu_InviteToGroup"))
 	end
