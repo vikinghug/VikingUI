@@ -204,8 +204,8 @@ function InventoryBag:OnDocumentReady()
 
 	Apollo.RegisterEventHandler("InterfaceMenu_ToggleInventory", 			"OnToggleVisibility", self) -- TODO: The datachron attachment needs to be brought over
 	Apollo.RegisterEventHandler("GuildBank_ShowPersonalInventory", 			"OnToggleVisibilityAlways", self)
-	Apollo.RegisterEventHandler("InvokeVendorWindow", 							"OnToggleVisibilityAlways", self)
-	Apollo.RegisterEventHandler("ShowBank",											 "OnToggleVisibilityAlways", self)
+	Apollo.RegisterEventHandler("InvokeVendorWindow", 						"OnToggleVisibilityAlways", self)
+	Apollo.RegisterEventHandler("ShowBank",									"OnToggleVisibilityAlways", self)
 	Apollo.RegisterEventHandler("PlayerEquippedItemChanged", 				"UpdateBagSlotItems", self) -- using this for bag changes
 	Apollo.RegisterEventHandler("PlayerPathMissionUpdate", 					"OnQuestObjectiveUpdated", self) -- route to same event
 	Apollo.RegisterEventHandler("QuestObjectiveUpdated", 					"OnQuestObjectiveUpdated", self)
@@ -222,6 +222,7 @@ function InventoryBag:OnDocumentReady()
 	Apollo.RegisterEventHandler("GenericEvent_SplitItemStack", 				"OnGenericEvent_SplitItemStack", self)
 
 	Apollo.RegisterEventHandler("PlayerCurrencyChanged",					"OnPlayerCurrencyChanged", self)
+	Apollo.RegisterEventHandler("PlayerTitleChange",              			"UpdateTitle", self)
 
 	Apollo.RegisterEventHandler("LevelUpUnlock_Inventory_Salvage", 			"OnLevelUpUnlock_Inventory_Salvage", self)
 	Apollo.RegisterEventHandler("LevelUpUnlock_Path_Item", 					"OnLevelUpUnlock_Path_Item", self)
@@ -345,6 +346,7 @@ end
 
 function InventoryBag:OnCharacterCreated()
 	self:OnPlayerCurrencyChanged()
+	self:UpdateTitle()
 end
 
 function InventoryBag:OnToggleVisibility()
@@ -398,6 +400,10 @@ end
 -----------------------------------------------------------------------------------------------
 function InventoryBag:OnInventoryClosed(wndHandler, wndControl)
 	self.wndMainBagWindow:MarkAllItemsAsSeen()
+end
+
+function InventoryBag:UpdateTitle()
+  self.wndMain:FindChild("InventoryTitleText"):SetText(String_GetWeaselString(Apollo.GetString("Inventory_TitleText"), GameLib.GetPlayerUnit()))
 end
 
 function InventoryBag:OnPlayerCurrencyChanged()
