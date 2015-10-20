@@ -85,9 +85,6 @@ local tVikingModeType = {
 }
 
 
-local GeminiLogging = Apollo.GetPackage("Gemini:Logging-1.2").tPackage
-local glog
-
 function VikingClassResources:new(o)
   o = o or {}
   setmetatable(o, self)
@@ -100,15 +97,6 @@ function VikingClassResources:Init()
 end
 
 function VikingClassResources:OnLoad()
-
-  glog = GeminiLogging:GetLogger({
-              level = GeminiLogging.INFO,
-              pattern = "%d [%c:%n] %l - %m",
-              appender = "GeminiConsole"
-             })
-
-  glog:info(string.format("Loaded "..NAME.." - "..VERSION))
-
   self.xmlDoc = XmlDoc.CreateFromFile("VikingClassResources.xml")
   self.xmlDoc:RegisterCallback("OnDocumentReady", self)
 
