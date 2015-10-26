@@ -88,7 +88,7 @@ local ktCategoryNames =
 	[ktTooltipCategories.NeutralNPC] 	= Apollo.GetString("MiniMap_NeutralNPCs"),
 	[ktTooltipCategories.HostileNPC] 	= Apollo.GetString("MiniMap_HostileNPCs"),
 	[ktTooltipCategories.Path] 			= Apollo.GetString("MiniMap_PathMissions"),
-	[ktTooltipCategories.Challenge] 	= Apollo.GetString("MiniMap_Challenges"),	
+	[ktTooltipCategories.Challenge] 	= Apollo.GetString("MiniMap_Challenges"),
 	[ktTooltipCategories.PublicEvent] 	= Apollo.GetString("ZoneMap_PublicEvent"),
 	[ktTooltipCategories.Tradeskill] 	= Apollo.GetString("MiniMap_Tradeskills"),
 	[ktTooltipCategories.Vendor] 		= Apollo.GetString("MiniMap_Vendors"),
@@ -397,7 +397,7 @@ function VikingMiniMap:OnDocumentReady()
 	Apollo.RegisterEventHandler("PublicEventObjectiveLocationRemoved", 	"OnPublicEventObjectiveUpdate", self)
 	Apollo.RegisterEventHandler("NavPointCleared",						"OnNavPointCleared", self)
 	Apollo.RegisterEventHandler("NavPointSet",							"OnNavPointSet", self)
-	
+
 	Apollo.RegisterEventHandler("CityDirectionMarked",					"OnCityDirectionMarked", self)
 	Apollo.RegisterEventHandler("ZoneMap_TimeOutCityDirectionEvent",	"OnZoneMap_TimeOutCityDirectionEvent", self)
 
@@ -413,7 +413,7 @@ function VikingMiniMap:OnDocumentReady()
 	Apollo.RegisterEventHandler("PlayerLevelChange",					"UpdateHarvestableNodes", self)
 
 	Apollo.RegisterTimerHandler("ChallengeFlashIconTimer", 				"OnStopChallengeFlashIcon", self)
-	
+
 	self.timerCreateDelay = ApolloTimer.Create(1.0, true, "OnOneSecTimer", self)
 	self.timerCreateDelay:Start()
 
@@ -467,7 +467,7 @@ function VikingMiniMap:OnDocumentReady()
 			[ktTooltipCategories.NeutralNPC] 		= true,
 			[ktTooltipCategories.HostileNPC] 		= true,
 			[ktTooltipCategories.Path] 				= true,
-			[ktTooltipCategories.Challenge] 		= true,	
+			[ktTooltipCategories.Challenge] 		= true,
 			[ktTooltipCategories.PublicEvent] 		= true,
 			[ktTooltipCategories.Tradeskill] 		= true,
 			[ktTooltipCategories.Vendor] 			= true,
@@ -486,7 +486,7 @@ function VikingMiniMap:OnDocumentReady()
 			[ktTooltipCategories.PvPMarker] 		= true,
 		}
 	end
-	
+
 	-- The object types for each category
 	self.tCategoryTypes =
 	{
@@ -514,7 +514,7 @@ function VikingMiniMap:OnDocumentReady()
 		[ktTooltipCategories.PvPMarker]		= {self.eObjectPvPMarkers,},
 		[ktTooltipCategories.Navpoint]		= {self.eObjectTypeNavPoint,},
 	}
-	
+
 	-- Maps object types to their parent category for quick access
 	self.tReverseCategoryMap = {}
 	for eCategory, tObjectTypes in pairs(self.tCategoryTypes) do
@@ -551,9 +551,9 @@ function VikingMiniMap:OnDocumentReady()
 		["OptionsBtnFriends"]			= ktTooltipCategories.Friend,
 		["OptionsBtnRivals"] 			= ktTooltipCategories.Rival,
 		["OptionsBtnTaxis"] 			= ktTooltipCategories.Taxi,
-		["OptionsBtnCityDirections"] 	= ktTooltipCategories.CityDirection,	
+		["OptionsBtnCityDirections"] 	= ktTooltipCategories.CityDirection,
 	}
-	
+
 	local wndOptionsWindow = self.wndMinimapOptions:FindChild("MapOptionsWindow")
 	for strWindowName, eCategory in pairs(tUIElementToType) do
 		local wndOptionsBtn = wndOptionsWindow:FindChild(strWindowName)
@@ -565,7 +565,7 @@ function VikingMiniMap:OnDocumentReady()
 		local tPoint = GameLib.GetNavPoint()
 		self:OnNavPointSet(tPoint and tPoint.tPosition or nil)
 	end
-	
+
 	self:RehideAllToggledIcons()
 
 	if g_wndTheMiniMap == nil then
@@ -573,13 +573,13 @@ function VikingMiniMap:OnDocumentReady()
 	end
 
 	self:OnOptionsUpdated()
-	self:UpdateRapidTransportBtn()
+	-- self:UpdateRapidTransportBtn()
 	Apollo.RegisterEventHandler("WindowManagementReady", "OnWindowManagementReady", self)
 	self:OnWindowManagementReady()
 end
 
 function VikingMiniMap:OnCharacterCreated()
-	self:UpdateRapidTransportBtn()
+	-- self:UpdateRapidTransportBtn()
 	Apollo.CreateTimer("TimeUpdateTimer", 1.0, true)
 
 	if not self.unitPlayerDisposition then
@@ -620,32 +620,32 @@ function VikingMiniMap:OnUpdateTimer()
 
 	--Toggle Visibility based on ui preference
 	local nVisibility = Apollo.GetConsoleVariable("hud.TimeDisplay")
-	
+
 	local tLocalTime = GameLib.GetLocalTime()
 	local tServerTime = GameLib.GetServerTime()
 	local b24Hour = true
 	local nLocalHour = tLocalTime.nHour > 12 and tLocalTime.nHour - 12 or tLocalTime.nHour == 0 and 12 or tLocalTime.nHour
 	local nServerHour = tServerTime.nHour > 12 and tServerTime.nHour - 12 or tServerTime.nHour == 0 and 12 or tServerTime.nHour
-		
+
 	self.wndMain:FindChild("Time"):SetText(string.format("%02d:%02d", tostring(tLocalTime.nHour), tostring(tLocalTime.nMinute)))
-	
+
 	if nVisibility == 2 then --Local 12hr am/pm
 		self.wndMain:FindChild("Time"):SetText(string.format("%02d:%02d", tostring(nLocalHour), tostring(tLocalTime.nMinute)))
-		
+
 		b24Hour = false
 	elseif nVisibility == 3 then --Server 24hr
 		self.wndMain:FindChild("Time"):SetText(string.format("%02d:%02d", tostring(tServerTime.nHour), tostring(tServerTime.nMinute)))
 	elseif nVisibility == 4 then --Server 12hr am/pm
 		self.wndMain:FindChild("Time"):SetText(string.format("%02d:%02d", tostring(nServerHour), tostring(tServerTime.nMinute)))
-		
+
 		b24Hour = false
 	end
-	
+
 	nLocalHour = b24Hour and tLocalTime.nHour or nLocalHour
 	nServerHour = b24Hour and tServerTime.nHour or nServerHour
-	
+
 	self.wndMain:FindChild("Time"):SetTooltip(
-		string.format("%s%02d:%02d\n%s%02d:%02d", 
+		string.format("%s%02d:%02d\n%s%02d:%02d",
 			Apollo.GetString("OptionsHUD_Local"), tostring(nLocalHour), tostring(tLocalTime.nMinute),
 			Apollo.GetString("OptionsHUD_Server"), tostring(nServerHour), tostring(tServerTime.nMinute)
 		)
@@ -747,8 +747,8 @@ end
 ---------------------------------------------------------------------------------------------------
 function VikingMiniMap:OnChangeZoneName(oVar, strNewZone)
 	self:UpdateZoneName(strNewZone)
-	
-	self:UpdateRapidTransportBtn()
+
+	-- self:UpdateRapidTransportBtn()
 
 	-- update mission indicators
 	self:ReloadMissions()
@@ -1089,8 +1089,8 @@ function VikingMiniMap:OnPublicEventUpdate(peUpdated)
 	self.wndMiniMap:RemoveObjectsByUserData(self.eObjectTypePublicEvent, peUpdated)
 	for idx, peoCurr in ipairs(peUpdated:GetObjectives()) do
 		self:OnPublicEventObjectiveEnd(peoCurr)
-	end	
-	
+	end
+
 	if not peUpdated:IsActive() or self.tToggledIcons == nil then
 		return
 	end
@@ -1169,7 +1169,7 @@ function VikingMiniMap:OnNavPointSet(tLoc)
 	if not self.wndMiniMap or not self.wndMiniMap:IsValid() or not tLoc then
 		return
 	end
-	
+
 	local tInfo =
 	{
 		objectType = self.eObjectTypeNavPoint,
@@ -1270,13 +1270,13 @@ function VikingMiniMap:OnOneSecTimer()
 	end
 
 	local nCurrentTime = os.time()
-	
+
 	while #self.tQueuedUnits > 0 do
 		local unit = table.remove(self.tQueuedUnits, #self.tQueuedUnits)
 		if unit:IsValid() then
 			self:HandleUnitCreated(unit)
 		end
-		
+
 		if os.time() - nCurrentTime > 0 then
 			break
 		end
@@ -1358,7 +1358,7 @@ function VikingMiniMap:HandleUnitCreated(unitNew)
 	for nIdx, tMarkerInfo in ipairs(tMarkerInfoList) do
 		local tInfo = self:GetDefaultUnitInfo()
 		local tInteract = unitNew:GetActivationState()
-		
+
 		if tMarkerInfo.strIcon ~= nil then
 			tInfo.strIcon = tMarkerInfo.strIcon
 		end
@@ -1382,7 +1382,7 @@ function VikingMiniMap:HandleUnitCreated(unitNew)
 		if tMarkerInfo.bShown ~= nil then
 			tMarkerOptions.bShown = tMarkerInfo.bShown
 		end
-		
+
 		-- only one of these should be set
 		if tMarkerInfo.bFixedSizeSmall ~= nil then
 			tMarkerOptions.bFixedSizeSmall = tMarkerInfo.bFixedSizeSmall
@@ -1400,7 +1400,7 @@ function VikingMiniMap:HandleUnitCreated(unitNew)
 			or (tMarkerInfo.bHideIfHostile and unitNew:GetDispositionTo(self.unitPlayerDisposition) ~= Unit.CodeEnumDisposition.Hostile)) then
 			local mapIconReference = self.wndMiniMap:AddUnit(unitNew, objectType, tInfo, tMarkerOptions, bIconState ~= nil and not bIconState)
 			self.tUnitsShown[unitNew:GetId()] = { tInfo = tInfo, unitObject = unitNew }
-			
+
 			if objectType == self.eObjectTypeGroupMember then
 				for idxMember = 2, GroupLib.GetMemberCount() do
 					local unitMember = GroupLib.GetUnitForGroupMember(idxMember)
@@ -1409,7 +1409,7 @@ function VikingMiniMap:HandleUnitCreated(unitNew)
 							if self.tGroupMembers[idxMember].mapObject ~= nil then
 								self.wndMiniMap:RemoveObject(self.tGroupMembers[idxMember].mapObject)
 							end
-	
+
 							self.tGroupMembers[idxMember].mapObject = mapIconReference
 						end
 						break
@@ -1472,7 +1472,7 @@ function VikingMiniMap:OnUnitDestroyed(unitDestroyed)
 	self.tUnitsShown[unitDestroyed:GetId()] = nil
 	self.tUnitsHidden[unitDestroyed:GetId()] = nil
 	self.arResourceNodes[unitDestroyed:GetId()] = nil
-	
+
 	if unitDestroyed:IsInYourGroup() then
 		for idxMember = 2, GroupLib.GetMemberCount() do
 			local unitMember = GroupLib.GetUnitForGroupMember(idxMember)
@@ -1544,7 +1544,7 @@ function VikingMiniMap:OnGroupRemove(strName, eReason)
 		end
 	end
 	]]--
-	
+
 	self:OnRefreshRadar()
 	self:DrawGroupMembers()
 end
@@ -1609,15 +1609,15 @@ function VikingMiniMap:DrawGroupMember(tMember)
 	if not GroupLib.GetGroupMember(tMember.nIndex).bIsOnline then
 		return
 	end
-	
+
 	local tZone = GameLib.GetCurrentZoneMap()
 	if tZone == nil or tMember.tZoneMap == nil or tMember.tZoneMap.id ~= tZone.id then
 		return
 	end
-	
+
 	local tMarkerInfo = self.tMinimapMarkerInfo.GroupMember
 	local tInfo = self:GetDefaultUnitInfo()
-	
+
 	if tMarkerInfo.strIcon ~= nil then
 		tInfo.strIcon = tMarkerInfo.strIcon
 	end
@@ -1641,14 +1641,14 @@ function VikingMiniMap:DrawGroupMember(tMember)
 	if tMarkerInfo.bShown ~= nil then
 		tMarkerOptions.bShown = tMarkerInfo.bShown
 	end
-	
+
 	-- only one of these should be set
 	if tMarkerInfo.bFixedSizeSmall ~= nil then
 		tMarkerOptions.bFixedSizeSmall = tMarkerInfo.bFixedSizeSmall
 	elseif tMarkerInfo.bFixedSizeMedium ~= nil then
 		tMarkerOptions.bFixedSizeMedium = tMarkerInfo.bFixedSizeMedium
 	end
-	
+
 	local strNameFormatted = string.format("<T Font=\"CRB_InterfaceMedium_B\" TextColor=\"ff31fcf6\">%s</T>", tMember.strName)
 	strNameFormatted = String_GetWeaselString(Apollo.GetString("ZoneMap_AppendGroupMemberLabel"), strNameFormatted)
 	tMember.mapObject = self.wndMiniMap:AddObject(self.eObjectTypeGroupMember, tMember.tWorldLoc, strNameFormatted, tInfo, tMarkerOptions)
@@ -1657,7 +1657,7 @@ end
 
 
 ---------------------------------------------------------------------------------------------------
-function VikingMiniMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)	
+function VikingMiniMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 	local strTooltip = ""
 	if eType ~= Tooltip.TooltipGenerateType_Map then
 		wndControl:SetTooltip("")
@@ -1669,13 +1669,13 @@ function VikingMiniMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 		wndControl:SetTooltip("")
 		return
 	end
-	
+
 	local tDisplayStrings = {}
-	
+
 	for key, tObject in pairs(tMapObjects) do
 		local strName = string.format("<T Font=\"%s\" TextColor=\"%s\">%s</T>", "CRB_InterfaceMedium", "ffffffff", tObject.strName)
 		local eParentCategory = self.tReverseCategoryMap[tObject.eType]
-		
+
 		if self.tToggledIcons[eParentCategory] or tObject.eType == self.eObjectTypeNavPoint then
 			if tObject.eType == GameLib.CodeEnumMapOverlayType.QuestObjective then
 				local strLevel = string.format("<T Font=\"%s\" TextColor=\"%s\"> (%s)</T>", "CRB_InterfaceMedium", ktConColors[tObject.userData:GetColoredDifficulty()], tObject.userData:GetConLevel())
@@ -1683,38 +1683,38 @@ function VikingMiniMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 			elseif tObject.eType == self.eObjectTypeNavPoint then
 				strName = Apollo.GetString("Navpoint_Set")
 			end
-			
-			if not tDisplayStrings[eParentCategory] then				
+
+			if not tDisplayStrings[eParentCategory] then
 				tDisplayStrings[eParentCategory] = {}
 			end
 
 			if not tDisplayStrings[eParentCategory][strName] then
 				tDisplayStrings[eParentCategory][strName] = {}
 			end
-			
+
 			if tObject.unit then
 				local idUnit = tObject.unit:GetId()
 				tDisplayStrings[eParentCategory][strName][idUnit] = true
 			end
 		end
 	end
-	
+
 	local arSortedCategories = {}
 	for eCategory, tStrings in pairs(tDisplayStrings) do
 		table.insert(arSortedCategories, eCategory)
 	end
-	
+
 	table.sort(arSortedCategories)
-	
+
 	local strFinal = ""
 	local nObjectCount = 0
-	
+
 	for idx, eCategory in pairs(arSortedCategories) do
-	
+
 		local tStrings = tDisplayStrings[eCategory]
 		if nObjectCount < 10 then
 			strFinal = strFinal .. string.format("<P><T Font=\"%s\" TextColor=\"%s\">%s</T></P>", "CRB_InterfaceMedium", "UI_TextHoloTitle", ktCategoryNames[eCategory])
-			
+
 			for strName, tIds in pairs(tStrings) do
 				local nCount = 0
 				if nObjectCount < 10 then
@@ -1722,28 +1722,28 @@ function VikingMiniMap:OnGenerateTooltip(wndHandler, wndControl, eType, nX, nY)
 					for idUnit, bExists in pairs(tIds) do
 						nCount = nCount + 1
 					end
-					
+
 					if nCount > 1 then
 						strCount = String_GetWeaselString(Apollo.GetString("Vendor_ItemCount"), nCount)
 					end
 					strFinal = strFinal .. "<P>-   " .. strName .. " " .. strCount .."</P>"
 				end
-				nObjectCount = nObjectCount + 1				
+				nObjectCount = nObjectCount + 1
 			end
 		end
 	end
-	
+
 	if nObjectCount > 10 then
 		strOther = String_GetWeaselString(Apollo.GetString("MiniMap_OtherUnits"), GetPluralizeActor(Apollo.GetString("CRB_Unit"), nObjectCount - 10))
 		strOther = string.format("<T Font=\"%s\" TextColor=\"%s\">%s</T>", "CRB_InterfaceMedium", "UI_TextHoloTitle", strOther)
 		strFinal = strFinal .. "<P>" .. strOther .. "</P>"
 	end
-	
+
 	if nObjectCount > 0 then
 		wndControl:SetTooltip(strFinal)
 	else
 		wndControl:SetTooltip("")
-	end	
+	end
 end
 
 function VikingMiniMap:OnFriendshipAccountFriendsRecieved(tFriendAccountList)
@@ -1790,24 +1790,24 @@ function VikingMiniMap:OnMiniMapMouseEnter(wndHandler, wndControl)
 	if wndHandler ~= wndControl then
 		return
 	end
-	
+
 	self.wndMain:FindChild("ZoomInButton"):Show(true)
 	self.wndMain:FindChild("ZoomOutButton"):Show(true)
 	self.wndMain:FindChild("MapToggleBtn"):Show(true)
 	self.wndMain:FindChild("MapMenuButton"):Show(true)
-	self.wndMain:FindChild("MiniMapResizeArtForPixie"):Show(true)
+	self:UpdateRapidTransportBtn()
 end
 
 function VikingMiniMap:OnMiniMapMouseExit(wndHandler, wndControl)
 	if wndHandler ~= wndControl then
 		return
 	end
-	
+
 	self.wndMain:FindChild("ZoomInButton"):Show(false)
 	self.wndMain:FindChild("ZoomOutButton"):Show(false)
 	self.wndMain:FindChild("MapToggleBtn"):Show(false)
 	self.wndMain:FindChild("MapMenuButton"):Show(false)
-	self.wndMain:FindChild("MiniMapResizeArtForPixie"):Show(false)
+	self.wndMain:FindChild("RapidTransportBtnOverlay"):Show(false)
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -1819,16 +1819,16 @@ function VikingMiniMap:OnTutorial_RequestUIAnchor(eAnchor, idTutorial, strPopupT
 	{
 		[GameLib.CodeEnumTutorialAnchor.VikingMiniMap] = true,
 	}
-	
+
 	if not tAnchors[eAnchor] then
 		return
 	end
 
-	local tAnchorMapping = 
+	local tAnchorMapping =
 	{
 		[GameLib.CodeEnumTutorialAnchor.VikingMiniMap] = self.wndMain,
 	}
-	
+
 	if tAnchorMapping[eAnchor] then
 		Event_FireGenericEvent("Tutorial_ShowCallout", eAnchor, idTutorial, strPopupText, tAnchorMapping[eAnchor])
 	end
@@ -1845,7 +1845,7 @@ function VikingMiniMap:OnFilterOptionCheck(wndHandler, wndControl, eMouseButton)
 	end
 
 	self.tToggledIcons[eCategory] = true
-	
+
 	for idx, eObjectType in pairs(self.tCategoryTypes[eCategory]) do
 		self.wndMiniMap:ShowObjectsByType(eObjectType)
 	end
@@ -1858,7 +1858,7 @@ function VikingMiniMap:OnFilterOptionUncheck(wndHandler, wndControl, eMouseButto
 	end
 
 	self.tToggledIcons[eCategory] = false
-	
+
 	for idx, eObjectType in pairs(self.tCategoryTypes[eCategory]) do
 		self.wndMiniMap:HideObjectsByType(eObjectType)
 	end
