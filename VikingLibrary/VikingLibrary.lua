@@ -63,7 +63,7 @@ end
 function VikingLibrary:Init()
   local bHasConfigureFunction = false
   local strConfigureButtonText = ""
-  local tDependencies = { "VikingSettings" }
+  local tDependencies = { "VikingSettings", "Gemini:Logging-1.2" }
 
   Apollo.RegisterAddon(self, bHasConfigureFunction, strConfigureButtonText, tDependencies)
 end
@@ -73,12 +73,18 @@ end
 -- VikingLibrary OnLoad
 -----------------------------------------------------------------------------------------------
 function VikingLibrary:OnLoad()
+  local GeminiLogging = Apollo.GetPackage("Gemini:Logging-1.2").tPackage
+  self.glog = GeminiLogging:GetLogger({
+      level = GeminiLogging.DEBUG,
+      pattern = "%d [%c:%n] %l - %m",
+      appender = "GeminiConsole"
+  })
+
   -- load our form file
   self.xmlDoc = XmlDoc.CreateFromFile("VikingLibrary.xml")
   self.xmlDoc:RegisterCallback("OnDocLoaded", self)
 
   Apollo.LoadSprites("VikingSprites.xml")
-
 end
 
 -----------------------------------------------------------------------------------------------
@@ -126,6 +132,10 @@ function VikingLibrary:OnDocLoaded()
     self.Settings = Apollo.GetAddon("VikingSettings")
 
     self.tColors = self.Settings.tColors
+
+    self.Rover = Apollo.GetAddon("Rover")
+    self.Rover:AddWatch("Library", self)
+    self.glog:info(string.format("Loaded "..self._VERSION))
   end
 end
 

@@ -53,7 +53,6 @@ local VikingSettings = Apollo.GetPackage("Gemini:Addon-1.1").tPackage:NewAddon(
                                   NAME,
                                   true,
                                   {
-                                    "Gemini:Logging-1.2",
                                     "GeminiColor",
                                     "Gemini:DB-1.0"
                                   })
@@ -65,22 +64,11 @@ local wndButtons = {}
 
 local wndSettings
 
-local GeminiLogging = Apollo.GetPackage("Gemini:Logging-1.2").tPackage
-local glog
-
 local GColor = Apollo.GetPackage("GeminiColor").tPackage
 
 local db = Apollo.GetPackage("Gemini:DB-1.0").tPackage:New(VikingSettings, defaults)
 
 function VikingSettings:OnInitialize()
-  glog = GeminiLogging:GetLogger({
-              level = GeminiLogging.INFO,
-              pattern = "%d [%c:%n] %l - %m",
-              appender = "GeminiConsole"
-             })
-
-  glog:info(string.format("Loaded "..NAME.." - "..VERSION))
-
   self.xmlDoc = XmlDoc.CreateFromFile("VikingSettings.xml")
   self.xmlDoc:RegisterCallback("OnDocLoaded", self)
 end
@@ -90,7 +78,10 @@ function VikingSettings:OnDocLoaded()
     Apollo.RegisterSlashCommand("vui", "OnVikingUISlashCommand", self)
 
     VikingSettings.RegisterSettings(self, "VikingSettings", nil, "Settings")
+    self.lib = Apollo.GetAddon("VikingLibrary")
+    self.lib.glog:info(string.format("Loaded "..NAME.." - "..VERSION))
   end
+
 end
 
 function VikingSettings.RegisterSettings(tAddon, strAddonName, tDefaults, strDisplayName)

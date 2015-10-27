@@ -84,7 +84,6 @@ local tVikingModeType = {
   [GameLib.CodeEnumClass.Spellslinger] = "Hardcore"
 }
 
-
 function VikingClassResources:new(o)
   o = o or {}
   setmetatable(o, self)
@@ -93,7 +92,7 @@ function VikingClassResources:new(o)
 end
 
 function VikingClassResources:Init()
-  Apollo.RegisterAddon(self, nil, nil, {"VikingActionBarFrame","VikingLibrary","Gemini:Logging-1.2"})
+  Apollo.RegisterAddon(self, nil, nil, {"VikingActionBarFrame","VikingLibrary"})
 end
 
 function VikingClassResources:OnLoad()
@@ -105,6 +104,7 @@ function VikingClassResources:OnLoad()
   Apollo.RegisterEventHandler("WindowManagementUpdate"     , "OnWindowManagementUpdate"     , self)
 
   Apollo.LoadSprites("VikingClassResourcesSprites.xml")
+
 end
 
 function VikingClassResources:OnDocumentReady()
@@ -112,6 +112,8 @@ function VikingClassResources:OnDocumentReady()
     return
   end
 
+  self.lib = Apollo.GetAddon("VikingLibrary")
+  self.lib.glog:info(string.format("Loaded "..self._VERSION))
   self.bDocLoaded = true
   self:OnRequiredFlagsChanged()
 end
@@ -150,6 +152,7 @@ function VikingClassResources:OnCharacterCreated()
   self.eClassID =  unitPlayer:GetClassId()
 
   if self.windMain == nil then
+    self.lib.glog:debug("OnCharacterCreated: No reference to wndMain, calling CreateClassResources")
     self:CreateClassResources()
   end
 
@@ -164,15 +167,20 @@ end
 
 function VikingClassResources:OnWindowManagementReady()
 
-  if self.windMain == nil then
+  if self.wndMain == nil then
+    self.lib.glog:debug("OnWindowManagementReady: No reference to wndMain, calling CreateClassResources")
     self:CreateClassResources()
   end
 
+  self.lib.glog:debug("Registering main window for window management.")
   Event_FireGenericEvent("WindowManagementRegister", { wnd = self.wndMain, strName = "Viking Class Resources"} )
-  Event_FireGenericEvent("WindowManagementAdd", { wnd = self.wndMain, strName = "Viking Class Resources"} )
+  Event_FireGenericEvent("WindowManagementAdd"     , { wnd = self.wndMain, strName = "Viking Class Resources"} )
 
-  Event_FireGenericEvent("WindowManagementRegister", { wnd = self.wndPet,  strName = "Viking Pet Resource"} )
-  Event_FireGenericEvent("WindowManagementAdd", { wnd = self.wndPet,  strName = "Viking Pet Resource"} )
+  if self.wndPet ~= nil then
+    self.lib.glog:debug("Registering pet window for window management.")
+    Event_FireGenericEvent("WindowManagementRegister", { wnd = self.wndPet,  strName = "Viking Pet Resource"} )
+    Event_FireGenericEvent("WindowManagementAdd"     , { wnd = self.wndPet,  strName = "Viking Pet Resource"} )
+  end
 end
 
 function VikingClassResources:OnWindowManagementUpdate(tWindow)
@@ -256,13 +264,13 @@ function VikingClassResources:UpdateProgressBar(unitPlayer, nResourceMax, nResou
 
   if self.eClassID == GameLib.CodeEnumClass.Stalker then
     wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "StalkerResource_SuitPowerDesc" )))
-    elseif self.eClassID == GameLib.CodeEnumClass.Engineer then
+  elseif self.eClassID == GameLib.CodeEnumClass.Engineer then
     wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "Engineer_ResourceTooltip" )))
-	elseif self.eClassID == GameLib.CodeEnumClass.Warrior then
-	wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "WarriorResource_OverdriveCaps" )))
+  elseif self.eClassID == GameLib.CodeEnumClass.Warrior then
+    wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( "WarriorResource_OverdriveCaps" )))
   else
     wndPrimaryProgress:SetTooltip(String_GetWeaselString(Apollo.GetString( className .. "Resource_FocusTooltip" ), nProgressCurrent, nProgressMax))
-end
+  end
 
   --Primary Text Style
 

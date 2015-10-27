@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Addon Author="vikinghugUI" APIVersion="11" Name="VikingLibrary" Description="" Version="0.1.0">
+    <Script Name="GeminiLogging.lua"/>
     <Script Name="VikingLibrary.lua"/>
     <Form Name="VikingLibrary.xml"/>
 </Addon>
