@@ -134,7 +134,11 @@ function VikingLibrary:OnDocLoaded()
     self.tColors = self.Settings.tColors
 
     self.Rover = Apollo.GetAddon("Rover")
-    self.Rover:AddWatch("Library", self)
+
+    if self.Rover ~= nil then
+      self.Rover:AddWatch("Library", self)
+    end
+
     self.glog:info(string.format("Loaded "..self._VERSION))
   end
 end
