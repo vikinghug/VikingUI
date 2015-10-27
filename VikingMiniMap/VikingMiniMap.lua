@@ -445,7 +445,6 @@ function VikingMiniMap:OnDocumentReady()
 
 	self.wndMain:FindChild("MapMenuButton"):AttachWindow(self.wndMinimapOptions)
 	self.wndMain:SetSizingMinimum(150, 150)
-	self.wndMain:SetSizingMaximum(400, 400)
 	self.wndMegaMapBtnOverlay:Show(false)
 	self.wndMinimapOptions:Show(false)
 
