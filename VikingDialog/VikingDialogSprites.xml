@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sprites>
+    <AutoButton Name="Dialog_Button" Texture="VikingDialog\assets\button.tga" x0="0" x1="0" x2="0" x3="1" x4="31" x5="32" y0="0" y1="0" y2="0" y3="1" y4="31" y5="32" Stretchy="1" StateBits="15" Direction="Across"/>
+</Sprites>
+
+
+
+

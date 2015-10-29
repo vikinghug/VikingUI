@@ -54,7 +54,8 @@ function Dialog:OnDocumentReady()
 	if  self.xmlDoc == nil then
 		return
 	end
-	Apollo.LoadSprites("UI\\Dialog\\DialogSprites.xml") -- Old
+
+	Apollo.LoadSprites("VikingDialogSprites.xml", "VikingDialogSprites")
 	Apollo.RegisterEventHandler("Dialog_ShowState", 						"OnDialog_ShowState", self)
 	Apollo.RegisterEventHandler("Dialog_Close", 							"OnDialog_Close", self)
 	Apollo.RegisterEventHandler("Tutorial_RequestUIAnchor", 				"OnTutorial_RequestUIAnchor", self)
