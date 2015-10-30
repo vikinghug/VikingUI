@@ -151,17 +151,20 @@ function VikingClassResources:OnCharacterCreated()
   end
   self.eClassID =  unitPlayer:GetClassId()
 
+  if self.lib ~= nil then
+    self.db = self.lib.Settings.RegisterSettings(self, "VikingClassResources", self:GetDefaults(), "Class Resources")
+  end
+
+  if self.db == nil then
+    self.lib.glog:debug("Could not create GeminiDB instance.")
+    return
+  else
+    self.lib.glog:debug("Loaded GeminiDB instance.")
+  end
+
   if self.windMain == nil then
     self.lib.glog:debug("OnCharacterCreated: No reference to wndMain, calling CreateClassResources")
     self:CreateClassResources()
-  end
-
-  if VikingLib == nil then
-    VikingLib = Apollo.GetAddon("VikingLibrary")
-  end
-
-  if VikingLib ~= nil then
-    self.db = VikingLib.Settings.RegisterSettings(self, "VikingClassResources", self:GetDefaults(), "Class Resources")
   end
 end
 
@@ -207,7 +210,11 @@ function VikingClassResources:CreateClassResources()
     self.wndPet = Apollo.LoadForm(self.xmlDoc, "PetBarContainer", FixedHudStratumLow, self)
     Apollo.RegisterEventHandler("ShowActionBarShortcut", "OnShowActionBarShortcut", self)
     self.wndPet:FindChild("StanceMenuOpenerBtn"):AttachWindow(self.wndPet:FindChild("StanceMenuBG"))
+    self.wndPet:FindChild("StanceMenuBG"):Show(false)
+    self.wndPet:FindChild("PetBar"):Show(self.db.char["PetBarVisible"])
     self.wndPet:ToFront()
+
+    self.lib.glog:debug("Loaded Pet Bar Visibility: "..tostring( self.db.char["PetBarVisible"] ))
 
     self.wndMain:FindChild("PrimaryProgress:EngineerGuide"):Show(true)
 
@@ -507,6 +514,10 @@ function VikingClassResources:OnPetBtn(wndHandler, wndControl)
   local bPetShow = self.wndPet:FindChild("PetBar"):IsShown()
 
   self.wndPet:FindChild("PetBar"):Show(not bPetShow)
+
+  -- Save for next time
+  self.db.char["PetBarVisible"] = (not bPetShow)
+  self.lib.glog:debug("Saved Pet Bar Visibility: "..tostring( self.db.char["PetBarVisible"] ))
 end
 
 function VikingClassResources:OnStanceBtn(wndHandler, wndControl)
@@ -523,6 +534,8 @@ function VikingClassResources:OnShowActionBarShortcut(nWhichBar, bIsVisible, nNu
   if nWhichBar ~= 1 or not self.wndPet or not self.wndPet:IsValid() then -- 1 is hardcoded to be the engineer pet bar
     return
   end
+
+  self.lib.glog:debug("Called OnShowActionBarShortcut("..nWhichBar..", "..tostring(bIsVisible)..", "..nNumShortcuts..")")
 
   self.wndPet:FindChild("PetBtn"):Show(bIsVisible)
   self.wndPet:FindChild("PetBar"):Show(bIsVisible)
