@@ -48,14 +48,15 @@ end
 function Dialog:OnLoad()
 	self.xmlDoc = XmlDoc.CreateFromFile("Dialog.xml")
 	self.xmlDoc:RegisterCallback("OnDocumentReady", self)
+	Apollo.LoadSprites("VikingDialogSprites.xml", "VikingDialogSprites")
 end
 
 function Dialog:OnDocumentReady()
 	if  self.xmlDoc == nil then
 		return
 	end
-
-	Apollo.LoadSprites("VikingDialogSprites.xml", "VikingDialogSprites")
+	Apollo.LoadSprites("VikingDialogSprites.xml", "VikingDialogSprites") -- blakbird
+	Apollo.LoadSprites("UI\\Dialog\\DialogSprites.xml") -- Old
 	Apollo.RegisterEventHandler("Dialog_ShowState", 						"OnDialog_ShowState", self)
 	Apollo.RegisterEventHandler("Dialog_Close", 							"OnDialog_Close", self)
 	Apollo.RegisterEventHandler("Tutorial_RequestUIAnchor", 				"OnTutorial_RequestUIAnchor", self)
@@ -254,29 +255,29 @@ end
 ---------------------------------------------------------------------------------------------------
 
 function Dialog:HelperComputeIconPath(eResponseType)
-	local strSprite = "CRB_DialogSprites:sprDialog_Icon_Decline"
+	local strSprite = "VikingDialogSprites:dialog3"
 	if eResponseType == DialogResponse.DialogResponseType_ViewVending then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Vendor"
+		strSprite = "VikingDialogSprites:dialog7"
 	elseif eResponseType == DialogResponse.DialogResponseType_ViewTraining then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Trainer"
+		strSprite = "VikingDialogSprites:dialog5"
 	elseif eResponseType == DialogResponse.DialogResponseType_ViewCraftingStation then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Vendor"
+		strSprite = "VikingDialogSprites:dialog7"
 	elseif eResponseType == DialogResponse.DialogResponseType_ViewTradeskillTraining then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Tradeskill"
+		strSprite = "VikingDialogSprites:dialog8"
 	elseif eResponseType == DialogResponse.DialogResponseType_ViewQuestAccept then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Exclamation"
+		strSprite = "VikingDialogSprites:dialog1"
 	elseif eResponseType == DialogResponse.DialogResponseType_ViewQuestComplete then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Check"
+		strSprite = "VikingDialogSprites:dialog4"
 	elseif eResponseType == DialogResponse.DialogResponseType_ViewQuestIncomplete then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_DisabledCheck"
+		strSprite = "VikingDialogSprites:dialog6"
 	elseif eResponseType == DialogResponse.DialogResponseType_Goodbye then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Decline"
+		strSprite = "VikingDialogSprites:dialog3"
 	elseif eResponseType == DialogResponse.DialogResponseType_QuestAccept then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Exclamation"
+		strSprite = "VikingDialogSprites:dialog1"
 	elseif eResponseType == DialogResponse.DialogResponseType_QuestMoreInfo then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_More"
+		strSprite = "VikingDialogSprites:dialog2"
 	elseif eResponseType == DialogResponse.DialogResponseType_QuestComplete then
-		strSprite = "CRB_DialogSprites:sprDialog_Icon_Check"
+		strSprite = "VikingDialogSprites:dialog4"
 	end
 	return strSprite
 end

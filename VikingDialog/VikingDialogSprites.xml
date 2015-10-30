@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Sprites>
+    <Sprite Name="dialog1" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="32" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="dialog2" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="32" x1="32" x2="32" x3="32" x4="32" x5="64" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="dialog3" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="64" x1="64" x2="64" x3="64" x4="64" x5="96" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="dialog4" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="96" x1="96" x2="96" x3="96" x4="96" x5="128" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="dialog5" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="128" x1="128" x2="128" x3="128" x4="128" x5="160" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="dialog6" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="160" x1="160" x2="160" x3="160" x4="160" x5="192" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="dialog7" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="192" x1="192" x2="192" x3="192" x4="192" x5="224" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="dialog8" Cycle="1">
+       <Frame Texture="VikingDialog\assets\Dialog_Icons.tga" x0="224" x1="224" x2="224" x3="224" x4="224" x5="256" y0="" y1="0" y2="0" y3="" y4="" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
     <AutoButton Name="Dialog_Button" Texture="VikingDialog\assets\button.tga" x0="0" x1="0" x2="0" x3="1" x4="31" x5="32" y0="0" y1="0" y2="0" y3="1" y4="31" y5="32" Stretchy="1" StateBits="15" Direction="Across"/>
 </Sprites>
 
