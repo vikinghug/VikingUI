@@ -309,6 +309,8 @@ function VikingGroupDisplay:OnLoad()
   self.xmlOptionsDoc = XmlDoc.CreateFromFile("VikingGroupDisplayOptions.xml")
   self.xmlDoc = XmlDoc.CreateFromFile("VikingGroupDisplay.xml")
   self.xmlDoc:RegisterCallback("OnDocumentReady", self)
+  Apollo.LoadSprites("VikingGroupFrameSprites.xml", "VikingGroupFrameSprites")
+  Apollo.LoadSprites("VikingSprites.xml", "VikingSprites")
 end
 
 function VikingGroupDisplay:OnDocumentReady()
@@ -485,7 +487,12 @@ function VikingGroupDisplay:LoadPortrait(idx)
     wndLowHealthFlash = wndHud:FindChild("LowHealthFlash"),
     wndPathIcon     = wndHud:FindChild("PathIcon"),
     wndOffline      = wndHud:FindChild("Offline"),
-    wndMark       = wndHud:FindChild("Mark")
+    wndMark       = wndHud:FindChild("Mark"),
+    wndTank       = wndHud:FindChild("Tank"),
+    wndHealer     = wndHud:FindChild("Healer"),
+    wndDps        = wndHud:FindChild("Dps"),
+    wndLevel      = wndHud:FindChild("Level")
+
   }
 
   self.tGroupWndPortraits[idx].wndHud:Show(false)
@@ -871,29 +878,69 @@ function VikingGroupDisplay:DrawMemberPortrait(tPortrait, tMemberInfo)
   local strName = tMemberInfo.strCharacterName
   if not tMemberInfo.bIsOnline then
         strName = String_GetWeaselString(Apollo.GetString("Group_OfflineMember"), strName)
-  elseif not unitMember then
-    strName = String_GetWeaselString(Apollo.GetString("Group_OutOfRangeMember"), strName)
-  end
+        -- Fade offline window a little
+        tPortrait.wndHealth:SetOpacity(.55)
+        tPortrait.wndShields:SetOpacity(.55)
+        tPortrait.wndMaxAbsorb:FindChild("CurrAbsorbBar"):SetOpacity(.55)
+        tPortrait.wndName:SetOpacity(1)
+        tPortrait.wndLevel:SetOpacity(.55)
+        tPortrait.wndClass:SetOpacity(.55)
+        tPortrait.wndLeader:SetOpacity(.55)
+        tPortrait.wndTank:SetOpacity(.55)
+        tPortrait.wndHealer:SetOpacity(.55)
+        tPortrait.wndDps:SetOpacity(.55)
 
-  if tMemberInfo.bTank then
-    strName = String_GetWeaselString(Apollo.GetString("Group_TankTag"), strName)
-  elseif tMemberInfo.bHealer then
-    strName = String_GetWeaselString(Apollo.GetString("Group_HealerTag"), strName)
-  elseif tMemberInfo.bDPS then
-    strName = String_GetWeaselString(Apollo.GetString("Group_DPSTag"), strName)
+  elseif not unitMember then
+    -- Change the opacity for out of range players
+    tPortrait.wndHealth:SetOpacity(.4)
+    tPortrait.wndShields:SetOpacity(.4)
+    tPortrait.wndMaxAbsorb:FindChild("CurrAbsorbBar"):SetOpacity(.4)
+    tPortrait.wndName:SetOpacity(.4)
+    tPortrait.wndLevel:SetOpacity(.4)
+    tPortrait.wndClass:SetOpacity(.4)
+    tPortrait.wndLeader:SetOpacity(.4)
+    tPortrait.wndTank:SetOpacity(.4)
+    tPortrait.wndHealer:SetOpacity(.4)
+    tPortrait.wndDps:SetOpacity(.4)
+
+  else
+    -- Set the opacities at 100% if the player is not out of range or offline
+    tPortrait.wndHealth:SetOpacity(1)
+    tPortrait.wndShields:SetOpacity(1)
+    tPortrait.wndMaxAbsorb:FindChild("CurrAbsorbBar"):SetOpacity(1)
+    tPortrait.wndName:SetOpacity(1)
+    tPortrait.wndLevel:SetOpacity(1)
+    tPortrait.wndClass:SetOpacity(1)
+    tPortrait.wndLeader:SetOpacity(1)
+    tPortrait.wndTank:SetOpacity(1)
+    tPortrait.wndHealer:SetOpacity(1)
+    tPortrait.wndDps:SetOpacity(1)
   end
 
   self.tGroupWndPortraits[tPortrait.idx].wndHud:FindChild("GroupPortraitBtn"):SetData({ tPortrait.idx, tMemberInfo.strCharacterName })
   tPortrait.wndName:SetText(strName)
   tPortrait.wndLeader:Show(tMemberInfo.bIsLeader)
+
+  -- Move the leader icon over when we have no role icons
+  if tMemberInfo.bTank or tMemberInfo.bHealer or tMemberInfo.bDPS then
+    tPortrait.wndLeader:SetAnchorOffsets(217, 7, 233, 22) 
+  else
+    tPortrait.wndLeader:SetAnchorOffsets(232, 7, 248, 22)
+  end
+
   tPortrait.wndClass:Show(tMemberInfo.bIsOnline)
   tPortrait.wndPathIcon:Show(tMemberInfo.bIsOnline)
   tPortrait.wndOffline:SetRotation(90)
-  tPortrait.wndOffline:Show(not tMemberInfo.bIsOnline)
+  -- Offline icon
+  -- tPortrait.wndOffline:Show(not tMemberInfo.bIsOnline)
   tPortrait.wndHud:FindChild("DeadIndicator"):Show(bDead)
   tPortrait.wndHud:FindChild("GroupPortraitHealthBG"):Show(tMemberInfo.nHealth > 0)
   tPortrait.wndHud:FindChild("GroupDisabledFrame"):Show(false)
   tPortrait.wndHud:FindChild("GroupPortraitBtn"):Show(true)
+  -- Show role icons
+  tPortrait.wndTank:Show(tMemberInfo.bTank)
+  tPortrait.wndHealer:Show(tMemberInfo.bHealer)
+  tPortrait.wndDps:Show(tMemberInfo.bDPS)
 
   local unitTarget = GameLib.GetTargetUnit()
   tPortrait.wndHud:FindChild("GroupPortraitBtn"):SetCheck(unitTarget and unitTarget == unitMember) --tPortrait.unitMember
@@ -907,6 +954,7 @@ function VikingGroupDisplay:DrawMemberPortrait(tPortrait, tMemberInfo)
   tPortrait.wndHud:FindChild("GroupPortraitArrangeVert"):ArrangeChildrenVert(1)
 
   self:HelperUpdateHealth(tPortrait, tMemberInfo, unitMember)
+  self:UpdateLevelText(tPortrait, tMemberInfo)
 
   -- Set the Path Icon
   local strPathSprite = ""
@@ -924,6 +972,29 @@ function VikingGroupDisplay:DrawMemberPortrait(tPortrait, tMemberInfo)
   tPortrait.wndMark:Show(tMemberInfo.nMarkerId ~= 0)
   if tMemberInfo.nMarkerId ~= 0 then
     tPortrait.wndMark:SetSprite(kstrRaidMarkerToSprite[tMemberInfo.nMarkerId])
+  end
+end
+
+function VikingGroupDisplay:UpdateLevelText(tPortrait, tMemberInfo)
+  -- Remove level text, if any - and return if we're not required to show levels.
+  if tPortrait == nil or tMemberInfo == nil then
+    return
+
+  else
+    local level
+    local unitMember = GroupLib.GetUnitForGroupMember(tPortrait.idx)
+
+    -- Change the level text and color for mentoring players
+    if (tMemberInfo.nEffectiveLevel > 0 and unitMember ~= nil) then
+      level = tMemberInfo.nEffectiveLevel
+      tPortrait.wndHud:FindChild("Level"):SetTextColor(ApolloColor.new("cc06ff5e"))
+    else
+      level = tMemberInfo.nLevel
+      tPortrait.wndHud:FindChild("Level"):SetTextColor(ApolloColor.new("white"))
+    end
+    tPortrait.wndHud:FindChild("Level"):SetText(level)
+
+    return
   end
 end
 
@@ -968,7 +1039,8 @@ function VikingGroupDisplay:HelperUpdateHealth(tPortrait, tMemberInfo, unitMembe
   -- Resize
   tPortrait.wndShields:EnableGlow(nShieldCurr > 0 and nShieldCurr ~= nShieldMax)
   self:SetBarValue(tPortrait.wndHealth, 0, nHealthCurr, nHealthMax)
-  self:SetBarValue(tPortrait.wndShields, 0, nShieldCurr, nShieldMax) -- Only the Curr Shield really progress fills
+  -- Only the Curr Shield really progress fills
+  self:SetBarValue(tPortrait.wndShields, 0, nShieldCurr, nShieldMax)
   self:SetBarValue(tPortrait.wndMaxAbsorb:FindChild("CurrAbsorbBar"), 0, nAbsorbCurr, nAbsorbMax)
   tPortrait.wndHealth:SetAnchorOffsets(self.nFrameLeft, self.nFrameTop, nPointHealthRight, self.nFrameBottom)
   tPortrait.wndMaxShields:SetAnchorOffsets(self.nFrameLeft, self.nMaxShieldFrameTop, nPointShieldRight, self.nMaxShieldFrameBottom)
@@ -976,7 +1048,8 @@ function VikingGroupDisplay:HelperUpdateHealth(tPortrait, tMemberInfo, unitMembe
 
   -- Bars
   tPortrait.wndShields:Show(nHealthCurr > 0)
-  tPortrait.wndHealth:Show(nHealthCurr > 0) -- TODO: Temp The sprite draws poorly this low.
+  -- TODO: Temp The sprite draws poorly this low.
+  tPortrait.wndHealth:Show(nHealthCurr > 0)
   tPortrait.wndMaxShields:Show(nHealthCurr > 0 and nShieldMax > 0)
   tPortrait.wndMaxAbsorb:Show(nHealthCurr > 0 and nAbsorbMax > 0)
 end

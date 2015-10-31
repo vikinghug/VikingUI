@@ -25,4 +25,22 @@
     <Sprite Name="LeaderIcon" Cycle="1">
         <Frame Texture="VikingGroupFrame\assets\leader.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
     </Sprite>
+    <Sprite Name="TankIcon" Cycle="1">
+        <Frame Texture="VikingGroupFrame\assets\tank.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="HealerIcon" Cycle="1">
+        <Frame Texture="VikingGroupFrame\assets\healer.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="DpsIcon" Cycle="1">
+        <Frame Texture="VikingGroupFrame\assets\dps.tga" x0="0" x1="0" x2="0" x3="0" x4="0" x5="16" y0="0" y1="0" y2="0" y3="0" y4="0" y5="16" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <Sprite Name="Right_Arrow" Cycle="1">
+        <Frame Texture="VikingGroupFrame\assets\right_arrow.tga" x0="0" x1="16" x2="16" x3="16" x4="16" x5="16" y0="0" y1="32" y2="32" y3="32" y4="32" y5="32" HotspotX="0" HotspotY="0" Duration="1.000" StartColor="white" EndColor="white"/>
+    </Sprite>
+    <AutoButton Name="Viking_Button" Texture="VikingGroupFrame\assets\button.tga" x0="0" x1="0" x2="0" x3="1" x4="31" x5="32" y0="0" y1="0" y2="0" y3="1" y4="31" y5="32" Stretchy="1" StateBits="15" Direction="Across"/>
+    <AutoButton Name="Viking_Button2" Texture="VikingGroupFrame\assets\button2.tga" x0="0" x1="0" x2="0" x3="1" x4="31" x5="32" y0="0" y1="0" y2="0" y3="1" y4="31" y5="32" Stretchy="1" StateBits="15" Direction="Across"/>
+    <AutoButton Name="Blue_Button" Texture="VikingGroupFrame\assets\blue_button.tga" x0="0" x1="0" x2="0" x3="1" x4="31" x5="32" y0="0" y1="0" y2="0" y3="1" y4="31" y5="32" Stretchy="1" StateBits="15" Direction="Across"/>
+    <AutoButton Name="Red_Button" Texture="VikingGroupFrame\assets\red_button.tga" x0="0" x1="0" x2="0" x3="1" x4="31" x5="32" y0="0" y1="0" y2="0" y3="1" y4="31" y5="32" Stretchy="1" StateBits="15" Direction="Across"/>
+    <AutoButton Name="CheckBox" Texture="VikingGroupFrame\assets\CheckBox.png" x0="0" x1="22" x2="22" x3="22" x4="22" x5="22" y0="0" y1="18" y2="18" y3="18" y4="18" y5="18" StateBits="31" Direction="Down"/>
+
 </Sprites>

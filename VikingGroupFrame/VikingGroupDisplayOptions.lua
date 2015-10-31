@@ -30,7 +30,7 @@ end
 
 function VikingGroupDisplayOptions:OnLoad()
 	self.xmlDoc = XmlDoc.CreateFromFile("VikingGroupDisplayOptions.xml")
-	self.xmlDoc:RegisterCallback("OnDocumentReady", self)
+	self.xmlDoc:RegisterCallback("OnDocumentReady", self) 
 end
 
 function VikingGroupDisplayOptions:OnDocumentReady()
@@ -58,7 +58,7 @@ function VikingGroupDisplayOptions:Initialize(wndParent)
 		[Item.CodeEnumItemQuality.Average] 			= Apollo.GetString("CRB_Average"),
 		[Item.CodeEnumItemQuality.Good] 			= Apollo.GetString("CRB_Good"),
 		[Item.CodeEnumItemQuality.Excellent] 		= Apollo.GetString("CRB_Excellent"),
- 		[Item.CodeEnumItemQuality.Superb] 			= Apollo.GetString("CRB_Superb"),
+		[Item.CodeEnumItemQuality.Superb] 			= Apollo.GetString("CRB_Superb"),
 		[Item.CodeEnumItemQuality.Legendary] 		= Apollo.GetString("CRB_Legendary"),
 		[Item.CodeEnumItemQuality.Artifact]	 		= Apollo.GetString("CRB_Artifact")
 	}
@@ -108,7 +108,7 @@ function VikingGroupDisplayOptions:RedrawAll() -- The button check and various U
 	if not self.wndMain or not self.wndMain:IsValid() then -- Will rely on the initialize to RedrawAll
 		return
 	end
-
+	
 	local nGroupCount = GroupLib.GetMemberCount()
 	if nGroupCount == 0 then
 		return
@@ -143,54 +143,39 @@ function VikingGroupDisplayOptions:HelperRedrawSpecific(strMenuName, tProvidedVa
 		wndOption:FindChild("CheckIcon"):Show(bIsChecked)
 
 		if not bIsLeader or bIsInstance then -- Priority: Red for disabled, Light Blue for checked, else Dark Blue
-			wndOption:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListDisabled"))
+			wndOption:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 		elseif bIsChecked then
-			wndOption:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListPressed"))
+			wndOption:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 		else
-			wndOption:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+			wndOption:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 		end
 	end
 
 	self.wndMain:FindChild("DisbandGroup"):Enable(bIsLeader and not bIsInstance)
 	if bIsLeader and not bIsInstance then
-		self.wndMain:FindChild("DisbandGroup"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+		self.wndMain:FindChild("DisbandGroup"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 	else
-		self.wndMain:FindChild("DisbandGroup"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListDisabled"))
+		self.wndMain:FindChild("DisbandGroup"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 	end
 
 	self.wndMain:FindChild("ResetInstances"):Enable(bIsLeader and not bIsInstance)
 	if bIsLeader and not bIsInstance then
-		self.wndMain:FindChild("ResetInstances"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+		self.wndMain:FindChild("ResetInstances"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 	else
-		self.wndMain:FindChild("ResetInstances"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListDisabled"))
+		self.wndMain:FindChild("ResetInstances"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 	end
 
 	self.wndMain:FindChild("LeaveGroup"):Enable(true)
-	self.wndMain:FindChild("LeaveGroup"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+	self.wndMain:FindChild("LeaveGroup"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 
 	local bIsInRaid = GroupLib.InRaid()
 	self.wndMain:FindChild("ConvertToRaid"):Enable(bIsLeader and not bIsInRaid and not bIsInstance)
 
 	if bIsLeader and not bIsInRaid and not bIsInstance then
-		self.wndMain:FindChild("ConvertToRaid"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+		self.wndMain:FindChild("ConvertToRaid"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 	else
-		self.wndMain:FindChild("ConvertToRaid"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListDisabled"))
+		self.wndMain:FindChild("ConvertToRaid"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 	end
-
-  if Hide == 1 then
-    self.wndMain:FindChild("HideMembers"):Enable(true)
-    self.wndMain:FindChild("HideMembers"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
-    self.wndMain:FindChild("ShowMembers"):Enable(true)
-    self.wndMain:FindChild("ShowMembers"):Show(false, true)
-  end
-  if Hide == 0 then
-    self.wndMain:FindChild("HideMembers"):Enable(true)
-    self.wndMain:FindChild("HideMembers"):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
-    self.wndMain:FindChild("ShowMembers"):Enable(true)
-    self.wndMain:FindChild("HideMembers"):Show(false, true)
-  end
-
-
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -212,9 +197,9 @@ function VikingGroupDisplayOptions:HelperRedrawMentoring() -- Also from XML's Me
 
 	local nMemberCount = GroupLib.GetMemberCount()
 	local bCanStopMentoring = tMyGroupData.bIsMentoring or tMyGroupData.bIsMentored
-	local strMentoringStopBtnColor = ApolloColor.new(bCanStopMentoring and "UI_BtnTextHoloListNormal" or "UI_BtnTextHoloListDisabled")
+	local strMentoringStopBtnColor = ApolloColor.new("white")
 	wndParent:FindChild("MentoringStopBtn"):Enable(bCanStopMentoring)
-	wndParent:FindChild("MentoringStopBtn"):FindChild("SubOptionsBtnText"):SetTextColor(strMentoringStopBtnColor)
+	wndParent:FindChild("MentoringStopBtn"):FindChild("SubOptionsBtnText"):SetTextColor("white")
 
 	for idx = 1, 4 do
 		local tTargetGroupData = GroupLib.GetGroupMember(idx + 1) -- GOTCHA: Off by one "Group Member One" text really means idx2
@@ -223,7 +208,7 @@ function VikingGroupDisplayOptions:HelperRedrawMentoring() -- Also from XML's Me
 		local wndCurrBtn = wndParent:FindChild("MentoringSpecificBtn"..idx)
 		wndCurrBtn:SetCheck(bActivelyMentoringThisPersonAlready)
 		wndCurrBtn:FindChild("CheckIcon"):Show(bActivelyMentoringThisPersonAlready)
-		wndCurrBtn:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new(bCanRallyToThisPerson and "UI_BtnTextHoloListNormal" or "UI_BtnTextHoloListDisabled"))
+		wndCurrBtn:FindChild("SubOptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 		wndCurrBtn:Enable(bCanRallyToThisPerson)
 
 		-- Button Text
@@ -301,7 +286,7 @@ function VikingGroupDisplayOptions:OnGroupFormatClose() -- clean up on close
 		if strMenu and self.wndMain:FindChild(strMenu) then
 			self.wndMain:FindChild(strMenu):SetCheck(false)
 			self.wndMain:FindChild(strMenu .. "Area"):Show(false)
-			self.wndMain:FindChild(strMenu):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+			self.wndMain:FindChild(strMenu):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 		end
 	end
 end
@@ -309,19 +294,19 @@ end
 function VikingGroupDisplayOptions:ResetMouseEnterHighlights(wndHandler, wndControl)
 	for idx, strMenu in ipairs(ktSubMenus) do
 		if strMenu and self.wndMain:FindChild(strMenu) and self.wndMain:FindChild(strMenu):FindChild("OptionsBtnText") then
-			self.wndMain:FindChild(strMenu):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+			self.wndMain:FindChild(strMenu):FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 		end
 	end
-	wndHandler:FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("UI_BtnTextHoloListPressed"))
+	wndHandler:FindChild("OptionsBtnText"):SetTextColor(ApolloColor.new("white"))
 end
 
 function VikingGroupDisplayOptions:OnOptionsWindowBtnMouseEnter(wndHandler, wndControl)
-	wndHandler:SetTextColor(ApolloColor.new("UI_BtnTextHoloListPressedFlyby"))
+	wndHandler:SetTextColor(ApolloColor.new("white"))
 end
 
 function VikingGroupDisplayOptions:OnOptionsWindowBtnMouseExit(wndHandler, wndControl)
 	if not wndHandler:GetParent():IsChecked() then -- TODO: refactor
-		wndHandler:SetTextColor(ApolloColor.new("UI_BtnTextHoloListNormal"))
+		wndHandler:SetTextColor(ApolloColor.new("white"))
 	end
 end
 
@@ -362,23 +347,3 @@ end
 
 local VikingGroupDisplayOptionsInst = VikingGroupDisplayOptions:new()
 VikingGroupDisplayOptionsInst:Init()
-
----------------------------------------------------------------------------------------------------
--- Hide Members
----------------------------------------------------------------------------------------------------
-
-function VikingGroupDisplayOptions:OnShowMembers( wndHandler, wndControl, eMouseButton )
-  Hide = 1
-  HidePortrait ()
-  self.wndMain:FindChild("HideMembers"):Show(true)
-  self.wndMain:FindChild("ShowMembers"):Show(false)
-  self.wndMain:Show(false)
-end
-
-function VikingGroupDisplayOptions:OnHideMembers( wndHandler, wndControl, eMouseButton )
-  Hide = 0
-  HidePortrait ()
-  self.wndMain:FindChild("HideMembers"):Show(false)
-  self.wndMain:FindChild("ShowMembers"):Show(true)
-  self.wndMain:Show(false)
-end
