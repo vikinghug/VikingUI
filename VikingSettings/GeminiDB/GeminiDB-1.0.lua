@@ -32,7 +32,7 @@
 -- end
 -- @class file
 -- @name GeminiDB-1.0.lua
-local MAJOR, MINOR = "Gemini:DB-1.0", 5
+local MAJOR, MINOR = "Gemini:DB-1.0", 6
 local APkg = Apollo.GetPackage(MAJOR)
 if APkg and (APkg.nVersion or 0) >= MINOR then
 	return -- no upgrade is needed
@@ -232,7 +232,7 @@ local dbmt = {
 						error("Attempt to access character-specific field " .. section .. " before character loaded.")
 					end
 					-- the key has changed so we need to obtain it again.
-					key = keys[section]
+					key = keys[section]	
 				end
 				local defaultTbl = rawget(t, "defaults")
 				local defaults = defaultTbl and defaultTbl[section]
@@ -282,7 +282,7 @@ local preserve_keys = {
 }
 
 local realmKey = GameLib.GetRealmName()
-local charKey = GameLib.GetAccountRealmCharacter().strCharacter .. " - " .. realmKey
+local charKey = (GameLib.GetAccountRealmCharacter and GameLib.GetAccountRealmCharacter().strCharacter or GameLib.GetPlayerUnit():GetName()) .. " - " .. realmKey
 local localeKey = GetLocale():lower()
 
 local function populateKeys(self)
@@ -464,12 +464,6 @@ local function OnRestore(self, eLevel, tSavedData)
 	-- If there are namespace DBs then select the correct profile now too.
 	if db.children then
 		for namespace, namespaceDB in pairs(db.children) do
-			local sv = rawget(namespaceDB, "sv")
-			-- Try to get the profile selected from the char db
-			local profileKey = sv.profileKeys[charKey] or db.defaultProfile or charKey
-			-- save the selected profile for later
-			sv.profileKeys[charKey] = profileKey
-
 			-- Set profile to the correct profile
 			local keyTbl = rawget(namespaceDB, "keys")
 			keyTbl.profile = profileKey
