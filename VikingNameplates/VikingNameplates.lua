@@ -720,13 +720,14 @@ function VikingNameplates:DrawHealth(tNameplate)
   end
 
   local bUseTarget = tNameplate.bIsTarget
+  local bMaxHealthAndShield = unitOwner:GetHealth() == unitOwner:GetMaxHealth() and unitOwner:GetShieldCapacity() == unitOwner:GetShieldCapacityMax()
   if bUseTarget then
     self:ToggleNamePlatesVisiblity(tNameplate, self.bShowHealthTarget)
   else
     if self.bShowHealthMain then
       self:ToggleNamePlatesVisiblity(tNameplate, true)
     elseif self.bShowHealthMainDamaged then
-      self:ToggleNamePlatesVisiblity(tNameplate, unitOwner:GetHealth() ~= unitOwner:GetMaxHealth())
+      self:ToggleNamePlatesVisiblity(tNameplate, bMaxHealthAndShield ~= true)
     else
       self:ToggleNamePlatesVisiblity(tNameplate, false)
     end
